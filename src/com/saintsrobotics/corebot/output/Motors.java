@@ -1,6 +1,6 @@
 package com.saintsrobotics.corebot.output;
 
-import com.saintsrobotics.corebot.Constants;
+import com.saintsrobotics.corebot.Robot;
 import edu.wpi.first.wpilibj.Talon;
 
 import java.util.ArrayList;
@@ -114,12 +114,12 @@ public abstract class Motors {
         }
     
         void update() {
-            if (Math.abs(setpoint - current) < Constants.MOTOR_RAMPING) {
+            if (Math.abs(setpoint - current) < Robot.MOTOR_RAMPING) {
                 current = setpoint;
             } else if (setpoint > current) {
-                current += Constants.MOTOR_RAMPING;
+                current += Robot.MOTOR_RAMPING;
             } else if (setpoint < current) {
-                current -= Constants.MOTOR_RAMPING;
+                current -= Robot.MOTOR_RAMPING;
             }
             speedController.set(current);
         }

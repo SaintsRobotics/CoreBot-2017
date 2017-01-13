@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 
 public class Robot extends IterativeRobot {
     
+    public static double MOTOR_RAMPING = 0.001;
+    
     public static Sensors sensors = new PracticeSensors();
     public static Motors motors = new PracticeMotors();
     public static OI oi = new OI();

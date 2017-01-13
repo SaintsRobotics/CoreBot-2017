@@ -47,7 +47,7 @@ public class RobotTest {
     
     @Before
     public void setupRobot() throws Exception {
-        Constants.MOTOR_RAMPING = 1;
+        Robot.MOTOR_RAMPING = 1;
         
         PowerMockito.mockStatic(NetworkTable.class);
         ITable mockSubTable = Mockito.mock(ITable.class);
