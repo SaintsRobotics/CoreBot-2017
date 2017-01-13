@@ -6,7 +6,7 @@ public abstract class RepeatingTask extends Task {
     protected void run() {
         while (true) {
             doOnRepeat();
-            yield(Wait.forFrame());
+            wait.forFrame();
         }
     }
     
