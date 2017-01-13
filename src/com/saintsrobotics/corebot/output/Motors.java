@@ -8,29 +8,44 @@ import java.util.List;
 
 public abstract class Motors {
     
-    public List<Motor> motorList = new ArrayList<>();
+    private List<Motor> motorList = new ArrayList<>();
     
-    public final Motor leftDrive1;
-    public final Motor leftDrive2;
-    public final Motor leftDrive3;
-    public final Motor rightDrive1;
-    public final Motor rightDrive2;
-    public final Motor rightDrive3;
+    public final MotorGroup leftDrive1;
+    public final MotorGroup leftDrive2;
+    public final MotorGroup leftDrive3;
+    public final MotorGroup rightDrive1;
+    public final MotorGroup rightDrive2;
+    public final MotorGroup rightDrive3;
+    public final MotorGroup leftMotors;
+    public final MotorGroup rightMotors;
+    public final MotorGroup allMotors;
     
     protected Motors(int leftDrivePin1, int leftDrivePin2, int leftDrivePin3,
     				 int rightDrivePin1, int rightDrivePin2, int rightDrivePin3) {
-        leftDrive1 = new Motor(leftDrivePin1);
-        leftDrive2 = new Motor(leftDrivePin2);
-        leftDrive3 = new Motor(leftDrivePin3);
-        rightDrive1 = new Motor(rightDrivePin1);
-        rightDrive2 = new Motor(rightDrivePin2);
-        rightDrive3 = new Motor(rightDrivePin3);
-        motorList.add(leftDrive1);
-        motorList.add(leftDrive2);
-        motorList.add(leftDrive3);
-        motorList.add(rightDrive1);
-        motorList.add(rightDrive2);
-        motorList.add(rightDrive3);
+        Motor motorLeftDrive1 = new Motor(leftDrivePin1);
+        Motor motorLeftDrive2 = new Motor(leftDrivePin2);
+        Motor motorLeftDrive3 = new Motor(leftDrivePin3);
+        Motor motorRightDrive1 = new Motor(rightDrivePin1);
+        Motor motorRightDrive2 = new Motor(rightDrivePin2);
+        Motor motorRightDrive3 = new Motor(rightDrivePin3);
+        motorList.add(motorLeftDrive1);
+        motorList.add(motorLeftDrive2);
+        motorList.add(motorLeftDrive3);
+        motorList.add(motorRightDrive1);
+        motorList.add(motorRightDrive2);
+        motorList.add(motorRightDrive3);
+        
+        leftDrive1 = new MotorGroup(motorLeftDrive1);
+        leftDrive2 = new MotorGroup(motorLeftDrive2);
+        leftDrive3 = new MotorGroup(motorLeftDrive3);
+        rightDrive1 = new MotorGroup(motorRightDrive1);
+        rightDrive2 = new MotorGroup(motorRightDrive2);
+        rightDrive3 = new MotorGroup(motorRightDrive3);
+        
+        leftMotors = new MotorGroup(motorLeftDrive1, motorLeftDrive2, motorLeftDrive3);
+        rightMotors = new MotorGroup(motorRightDrive1, motorRightDrive2, motorRightDrive3);
+        
+        allMotors = new MotorGroup(leftMotors, rightMotors);
     }
     
     public void init() {
@@ -43,6 +58,33 @@ public abstract class Motors {
     
     public void update() {
         motorList.forEach(Motor::update);
+    }
+    
+    public static class MotorGroup {
+    
+        private Motor[] motors;
+    
+        private MotorGroup(Motor... motors) {
+            this.motors = motors;
+        }
+    
+        private MotorGroup(MotorGroup... motorGroups) {
+            List<Motor> motorList = new ArrayList<>();
+            for (MotorGroup motorGroup : motorGroups) {
+                for (Motor motor : motorGroup.motors) {
+                    if (!motorList.contains(motor)) {
+                        motorList.add(motor);
+                    }
+                }
+            }
+            motors = motorList.toArray(new Motor[0]);
+        }
+        
+        public void set(double speed) {
+            for (Motor motor : motors) {
+                motor.set(speed);
+            }
+        }
     }
     
     public static class Motor {
@@ -61,7 +103,7 @@ public abstract class Motors {
         private double setpoint = 0;
         private double current = 0;
         
-        public void set(double speed) {
+        void set(double speed) {
             setpoint = speed;
         }
     

@@ -47,6 +47,8 @@ public class RobotTest {
     
     @Before
     public void setupRobot() throws Exception {
+        Constants.MOTOR_RAMPING = 1;
+        
         PowerMockito.mockStatic(NetworkTable.class);
         ITable mockSubTable = Mockito.mock(ITable.class);
         NetworkTable mockNetworkTable = Mockito.mock(NetworkTable.class);
@@ -77,7 +79,7 @@ public class RobotTest {
     }
     
     @Test
-    public void testDrive() {
+    public void testTeleop() {
         robot.teleopInit();
         for (int i = 0; i < 1200; i++) {
             robot.teleopPeriodic();
@@ -95,5 +97,45 @@ public class RobotTest {
         verify(rightDrive1, atLeastOnce()).set(1.0);
         verify(rightDrive2, atLeastOnce()).set(1.0);
         verify(rightDrive3, atLeastOnce()).set(1.0);
+    }
+    
+    @Test
+    public void testTest() throws InterruptedException {
+        robot.testInit();
+        
+        robot.testPeriodic();
+        verify(leftDrive1).set(0.2);
+        Thread.sleep(210);
+        
+        robot.testPeriodic();
+        verify(leftDrive2).set(0.2);
+        Thread.sleep(210);
+        
+        robot.testPeriodic();
+        verify(leftDrive3).set(0.2);
+        Thread.sleep(210);
+    
+        robot.testPeriodic();
+        verify(rightDrive1).set(0.2);
+        Thread.sleep(210);
+    
+        robot.testPeriodic();
+        verify(rightDrive2).set(0.2);
+        Thread.sleep(210);
+    
+        robot.testPeriodic();
+        verify(rightDrive3).set(0.2);
+        Thread.sleep(210);
+    
+        verify(leftDrive1, times(6)).set(0.2);
+        
+        robot.testPeriodic();
+        verify(leftDrive1, times(1)).set(0);
+        Thread.sleep(210);
+        
+        robot.testPeriodic();
+        robot.testPeriodic();
+        verify(leftDrive1, times(7)).set(0.2);
+        Thread.sleep(210);
     }
 }

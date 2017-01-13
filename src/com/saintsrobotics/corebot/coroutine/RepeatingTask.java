@@ -7,9 +7,10 @@ public abstract class RepeatingTask extends Task {
     @Override
     protected void run() {
         while (true) {
+            doOnRepeat();
             yield(new WaitForFrame());
         }
     }
     
-    protected abstract void doEveryTick();
+    protected abstract void doOnRepeat();
 }

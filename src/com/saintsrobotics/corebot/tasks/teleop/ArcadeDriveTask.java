@@ -5,15 +5,11 @@ import com.saintsrobotics.corebot.coroutine.RepeatingTask;
 public class ArcadeDriveTask extends RepeatingTask {
 
 	@Override
-	protected void doEveryTick() {
+	protected void doOnRepeat() {
         double forward = -Robot.oi.drive.axis.leftStickY();
         double turn = Robot.oi.drive.axis.rightStickX();
         
-        Robot.motors.leftDrive1.set(forward + turn);
-        Robot.motors.leftDrive2.set(forward + turn);
-        Robot.motors.leftDrive3.set(forward + turn);
-        Robot.motors.rightDrive1.set(forward - turn);
-        Robot.motors.rightDrive2.set(forward - turn);
-        Robot.motors.rightDrive3.set(forward - turn);
+        Robot.motors.leftMotors.set(forward + turn);
+        Robot.motors.rightMotors.set(forward - turn);
 	}
 }
