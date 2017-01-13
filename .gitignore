@@ -1,0 +1,10 @@
+/.idea/
+*.iml
+/dist/
+/build/
+/*.properties
+!/build.properties
+/out/
+/.classpath
+/.project
+/bin/
