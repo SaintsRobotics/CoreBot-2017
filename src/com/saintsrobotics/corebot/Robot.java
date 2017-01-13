@@ -9,7 +9,7 @@ import com.saintsrobotics.corebot.output.PracticeMotors;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
 import com.saintsrobotics.corebot.tasks.autonomous.DriveStraightAutonTask;
 import com.saintsrobotics.corebot.tasks.teleop.ArcadeDriveTask;
-import com.saintsrobotics.corebot.tasks.test.TestMotorsTask;
+import com.saintsrobotics.corebot.tasks.test.ToggleForwardDriveTask;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 public class Robot extends IterativeRobot {
@@ -50,7 +50,7 @@ public class Robot extends IterativeRobot {
     @Override
     public void testInit() {
         testRunner = new TaskRunner(
-                new TestMotorsTask(),
+                new ToggleForwardDriveTask(),
                 new UpdateMotors()
         );
     }

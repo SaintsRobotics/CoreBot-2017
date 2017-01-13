@@ -42,16 +42,19 @@ public class OI {
     
     public static class XboxInput extends Input {
         
-        public final XboxAxis axis;
+        public final XboxAxis axes;
+        public final XboxButtons buttons;
         
         private XboxInput(int pin) {
             super(pin);
-            axis = new XboxAxis();
+            axes = new XboxAxis();
+            buttons = new XboxButtons();
         }
     
         @Override
         void initJoystick() {
-            axis.setJoystick(joystick);
+            axes.setJoystick(joystick);
+            buttons.setJoystick(joystick);
         }
         
         public static class XboxAxis {
@@ -62,29 +65,32 @@ public class OI {
                 this.joystick = joystick;
             }
         
-            public double leftStickX() {
-                return joystick.getRawAxis(0);
-            }
+            public double leftStickX() { return joystick.getRawAxis(0); }
+            public double leftStickY() { return joystick.getRawAxis(1); }
+            public double leftTrigger() { return joystick.getRawAxis(2); }
+            public double rightTrigger() { return joystick.getRawAxis(3); }
+            public double rightStickX() { return joystick.getRawAxis(4); }
+            public double rightStickY() { return joystick.getRawAxis(5); }
+        }
         
-            public double leftStickY() {
-                return joystick.getRawAxis(1);
+        public static class XboxButtons {
+    
+            private Joystick joystick;
+    
+            void setJoystick(Joystick joystick) {
+                this.joystick = joystick;
             }
-        
-            public double leftTrigger() {
-                return joystick.getRawAxis(2);
-            }
-        
-            public double rightTrigger() {
-                return joystick.getRawAxis(3);
-            }
-        
-            public double rightStickX() {
-                return joystick.getRawAxis(4);
-            }
-        
-            public double rightStickY() {
-                return joystick.getRawAxis(5);
-            }
+            
+            public boolean A() { return joystick.getRawButton(1); }
+            public boolean B() { return joystick.getRawButton(2); }
+            public boolean X() { return joystick.getRawButton(3); }
+            public boolean Y() { return joystick.getRawButton(4); }
+            public boolean LB() { return joystick.getRawButton(5); }
+            public boolean RB() { return joystick.getRawButton(6); }
+            public boolean SELECT() { return joystick.getRawButton(7); }
+            public boolean START() { return joystick.getRawButton(8); }
+            public boolean L3() { return joystick.getRawButton(8); }
+            public boolean R3() { return joystick.getRawButton(9); }
         }
     }
 }
