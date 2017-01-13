@@ -1,14 +1,14 @@
 package com.saintsrobotics.corebot;
 
+import com.saintsrobotics.corebot.coroutine.TaskRunner;
 import com.saintsrobotics.corebot.input.OI;
 import com.saintsrobotics.corebot.input.PracticeSensors;
 import com.saintsrobotics.corebot.input.Sensors;
 import com.saintsrobotics.corebot.output.Motors;
 import com.saintsrobotics.corebot.output.PracticeMotors;
-import com.saintsrobotics.corebot.tasks.DriveTask;
+import com.saintsrobotics.corebot.tasks.autonomous.DriveStraightAutonTask;
+import com.saintsrobotics.corebot.tasks.teleop.ArcadeDriveTask;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
-import com.saintsrobotics.corebot.coroutine.Task;
-import com.saintsrobotics.corebot.coroutine.TaskRunner;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 public class Robot extends IterativeRobot {
@@ -18,6 +18,8 @@ public class Robot extends IterativeRobot {
     public static OI oi = new OI();
     
     private TaskRunner teleopRunner;
+    private TaskRunner autonomousRunner;
+    private TaskRunner testRunner;
     
     @Override
     public void robotInit() {
@@ -28,10 +30,25 @@ public class Robot extends IterativeRobot {
     
     @Override
     public void teleopInit() {
-        teleopRunner = new TaskRunner(new Task[] {
-                new DriveTask(),
+        teleopRunner = new TaskRunner(
+                new ArcadeDriveTask(),
                 new UpdateMotors()
-        });
+        );
+    }
+    
+    @Override
+    public void autonomousInit() {
+        autonomousRunner = new TaskRunner(
+                new DriveStraightAutonTask(),
+                new UpdateMotors()
+        );
+    }
+    
+    @Override
+    public void testInit() {
+        testRunner = new TaskRunner(
+                new UpdateMotors()
+        );
     }
     
     @Override
@@ -40,29 +57,25 @@ public class Robot extends IterativeRobot {
     }
     
     @Override
-    public void autonomousInit() {
-        
-    }
-    
-    @Override
     public void autonomousPeriodic() {
-        
-    }
-    
-    @Override
-    public void testInit() {
-        
+        autonomousRunner.run();
     }
     
     @Override
     public void testPeriodic() {
-        
+        testRunner.run();
     }
     
     @Override
     public void disabledInit() {
         if (teleopRunner != null) {
             teleopRunner.disable();
+        }
+        if (autonomousRunner != null) {
+            autonomousRunner.disable();
+        }
+        if (testRunner != null) {
+            testRunner.disable();
         }
         motors.stopAll();
     }
