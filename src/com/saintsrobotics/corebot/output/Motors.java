@@ -21,7 +21,7 @@ public abstract class Motors {
     public final MotorGroup allMotors;
     
     protected Motors(int leftDrivePin1, int leftDrivePin2, int leftDrivePin3,
-    				 int rightDrivePin1, int rightDrivePin2, int rightDrivePin3) {
+                     int rightDrivePin1, int rightDrivePin2, int rightDrivePin3) {
         Motor motorLeftDrive1 = new Motor(leftDrivePin1);
         Motor motorLeftDrive2 = new Motor(leftDrivePin2);
         Motor motorLeftDrive3 = new Motor(leftDrivePin3);
