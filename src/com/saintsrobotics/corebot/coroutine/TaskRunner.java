@@ -21,8 +21,8 @@ public class TaskRunner {
             return;
         }
         
-        for (Iterator<Task> iterator = tasks.iterator(); iterator.hasNext(); ) {
-            Task task = iterator.next();
+        for (Iterator<Task> taskIterator = tasks.iterator(); taskIterator.hasNext(); ) {
+            Task task = taskIterator.next();
             if (task.iterator == null) {
                 task.iterator = task.iterator();
             }
@@ -31,7 +31,7 @@ public class TaskRunner {
                 if (task.iterator.hasNext()) {
                     task.waiter = task.iterator.next();
                 } else {
-                    iterator.remove();
+                    taskIterator.remove();
                 }
             }
         }

@@ -7,7 +7,7 @@ import java.util.function.BooleanSupplier;
 
 public abstract class Task extends Generator<BooleanSupplier> {
     
-    protected Waiters wait;
+    protected Waiters wait = new Waiters();
     
     BooleanSupplier waiter = () -> true;
     Iterator<BooleanSupplier> iterator;
