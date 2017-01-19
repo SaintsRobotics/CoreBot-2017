@@ -1,0 +1,17 @@
+{
+    "client":{
+        "outputs":{
+            "hi":1,
+            "bye":2,
+            "more":3,
+            "more2":4,
+            "more3":5
+        }
+    },
+    "server":{
+        "motors":{
+          "left":1,
+          "right":1
+        }
+    }
+}

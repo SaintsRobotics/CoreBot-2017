@@ -2,13 +2,15 @@ package com.saintsrobotics.corebot.tasks.autonomous;
 
 import com.saintsrobotics.corebot.Robot;
 import com.saintsrobotics.corebot.coroutine.Task;
+import com.saintsrobotics.corebot.output.MotorGroup;
 
 public class DriveStraightAutonTask extends Task {
     
     @Override
     protected void run() {
-        Robot.motors.allMotors.set(0.3);
+    	MotorGroup all = new MotorGroup("left1","left2","left3", "right1","right2","right3");
+        all.set(0.3);
         wait.forSeconds(3);
-        Robot.motors.allMotors.set(0);
+        all.set(0);
     }
 }
