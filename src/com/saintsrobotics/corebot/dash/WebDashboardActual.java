@@ -107,6 +107,7 @@ public class WebDashboardActual extends WebSocketServer implements WebDashboard 
 		JSONObject messageJSON = new JSONObject();
 		messageJSON.put("text", message);
 		messageJSON.put("color", color);
+		messageJSON.put("type", "log");
 		send(messageJSON.toString());
 	}
 	public ValueFamily family(String s){

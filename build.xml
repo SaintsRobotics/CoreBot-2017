@@ -24,43 +24,7 @@
   <property file="${user.home}/wpilib/wpilib.properties"/>
   <property file="build.properties"/>
   <property file="${user.home}/wpilib/java/${version}/ant/build.properties"/>
-  
-  <import file="${wpilib.ant.dir}/build.xml"/>
+  <echo> Running Build HTML</echo>
+  <import file="build-html.xml"/>
 
-  <property name="test.build.dir" value="build/test"/>
-  <property name="test.src.dir" value="test"/>
-
-  <path id="classpath.test">
-    <pathelement location="lib/cglib-nodep-2.2.2.jar" />
-    <pathelement location="lib/hamcrest-core-1.3.jar" />
-    <pathelement location="lib/javassist-3.21.0-GA.jar" />
-    <pathelement location="lib/junit-4.12.jar" />
-    <pathelement location="lib/mockito-core-1.10.19.jar" />
-    <pathelement location="lib/objenesis-2.4.jar" />
-    <pathelement location="lib/powermock-mockito-1.6.6-full.jar" />
-
-    <pathelement location="${build.dir}"/>
-    <pathelement location="${wpilib.jar}"/>
-    <pathelement location="${networktables.jar}"/>
-  </path>
-
-  <target name="test-compile" depends="compile">
-    <mkdir dir="${test.build.dir}"/>
-    <javac srcdir="${test.src.dir}" destdir="${test.build.dir}" includeantruntime="false">
-      <classpath refid="classpath.test"/>
-    </javac>
-  </target>
-
-  <target name="test" depends="test-compile">
-    <junit printsummary="on" haltonfailure="yes" fork="true">
-      <classpath>
-        <path refid="classpath.test"/>
-        <pathelement location="${test.build.dir}"/>
-      </classpath>
-      <formatter type="brief" usefile="false" />
-      <batchtest>
-        <fileset dir="${test.src.dir}" includes="**/*Test.java" />
-      </batchtest>
-    </junit>
-  </target>
 </project> 

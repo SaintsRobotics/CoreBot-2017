@@ -1,8 +1,13 @@
 package com.saintsrobotics.corebot;
 
+import java.io.File;
 import java.net.UnknownHostException;
 
+import org.simpleHTTPServer.SimpleHTTPServer;
+
+import com.saintsrobotics.corebot.coroutine.Task;
 import com.saintsrobotics.corebot.coroutine.TaskRunner;
+import com.saintsrobotics.corebot.dash.ValueFamily;
 import com.saintsrobotics.corebot.dash.WebDashboard;
 import com.saintsrobotics.corebot.dash.WebDashboardActual;
 import com.saintsrobotics.corebot.dash.WebDashboardDummy;
@@ -15,6 +20,7 @@ import com.saintsrobotics.corebot.tasks.autonomous.DriveStraightAutonTask;
 import com.saintsrobotics.corebot.tasks.teleop.ArcadeDriveTask;
 import com.saintsrobotics.corebot.tasks.test.ToggleForwardDriveTask;
 
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
@@ -34,8 +40,12 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
         sensors.init();
         oi.init();
+        SimpleHTTPServer server;
         try {
+        	server = new SimpleHTTPServer(8080, new File("./home/lvuser/html"));
+        	server.start();
 			webDashboard = new WebDashboardActual();
+			((WebDashboardActual) webDashboard).start();
 		} catch (UnknownHostException e) {
 			webDashboard = new WebDashboardDummy();
 			Robot.log("WebDashboard broke, falling back");
@@ -61,8 +71,20 @@ public class Robot extends IterativeRobot {
     @Override
     public void testInit() {
         testRunner = new TaskRunner(
-                new ToggleForwardDriveTask(),
-                new UpdateMotors()
+                new Task(){
+					@Override
+					protected void run() {
+						ValueFamily outputs = webDashboard.family("outputs");
+						AnalogGyro gyro = new AnalogGyro(0);
+						while(true){
+							String val = String.format("%1$,.2f", gyro.getAngle());
+							outputs.change("gyro", val);
+							logSafe("gyro " + val);
+							wait.forSeconds(0.5);
+						}
+					}
+                	
+                }
         );
     }
     
