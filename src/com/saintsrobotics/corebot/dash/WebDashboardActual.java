@@ -100,6 +100,15 @@ public class WebDashboardActual extends WebSocketServer implements WebDashboard 
 			this.defaultSocket = this.connections().iterator().next();
 		this.defaultSocket.send(message);
 	}
+	public void log(String message){
+		log(message, "black");
+	}
+	public void log(String message, String color){
+		JSONObject messageJSON = new JSONObject();
+		messageJSON.put("text", message);
+		messageJSON.put("color", color);
+		send(messageJSON.toString());
+	}
 	public ValueFamily family(String s){
 		return new ValueFamily(s,this);
 	}

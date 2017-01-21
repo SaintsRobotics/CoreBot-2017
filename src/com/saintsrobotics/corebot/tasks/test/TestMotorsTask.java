@@ -6,10 +6,10 @@ import com.saintsrobotics.corebot.coroutine.RepeatingTask;
 public class TestMotorsTask extends RepeatingTask {
     
     @Override
-    protected void doOnRepeat() {
+    protected void doOnRepeat(double sec) {
         double speed = 0.2;
         
-        Robot.motors.leftDrive1.set(speed);
+        /*Robot.motors.leftDrive1.set(speed);
         wait.forSeconds(0.2);
         Robot.motors.leftDrive2.set(speed);
         wait.forSeconds(0.2);
@@ -22,6 +22,6 @@ public class TestMotorsTask extends RepeatingTask {
         Robot.motors.rightDrive3.set(speed);
         wait.forSeconds(0.2);
         Robot.motors.allMotors.set(0);
-        wait.forSeconds(0.2);
+        wait.forSeconds(0.2);*/
     }
 }

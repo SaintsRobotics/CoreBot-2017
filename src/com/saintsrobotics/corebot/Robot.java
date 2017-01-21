@@ -100,6 +100,9 @@ public class Robot extends IterativeRobot {
         
     }
     public static void log(String s){
+    	webDashboard.log(s);
+    }
+    public static void logSafe(String s){
     	DriverStation.reportError(s+"\n", false);
     }
     public static void log(String... s){

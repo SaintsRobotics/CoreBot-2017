@@ -32,4 +32,14 @@ public class WebDashboardDummy implements WebDashboard{
 	public JSONObject values(){
 		return values;
 	}
+	@Override
+	public void log(String s) {
+		Robot.logSafe(s);
+		
+	}
+	@Override
+	public void log(String s, String color) {
+		Robot.logSafe(s);
+		
+	}
 }
