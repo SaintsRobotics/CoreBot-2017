@@ -10,22 +10,24 @@ import com.saintsrobotics.corebot.tasks.UpdateMotors;
 import com.saintsrobotics.corebot.tasks.autonomous.DriveStraightAutonTask;
 import com.saintsrobotics.corebot.tasks.teleop.ArcadeDriveTask;
 import com.saintsrobotics.corebot.tasks.test.ToggleForwardDriveTask;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 public class Robot extends IterativeRobot {
     
-    public static double MOTOR_RAMPING = 0.001;
-    
+    public static double MOTOR_RAMPING = 0.05;
+
     public static Sensors sensors = new PracticeSensors();
     public static Motors motors = new PracticeMotors();
     public static OI oi = new OI();
-    
+
     private TaskRunner teleopRunner;
     private TaskRunner autonomousRunner;
     private TaskRunner testRunner;
-    
+
     @Override
     public void robotInit() {
+        new Thread(() -> CameraServer.getInstance().startAutomaticCapture()).start();
         sensors.init();
         motors.init();
         oi.init();
@@ -54,7 +56,7 @@ public class Robot extends IterativeRobot {
                 new UpdateMotors()
         );
     }
-    
+
     @Override
     public void teleopPeriodic() {
         teleopRunner.run();
