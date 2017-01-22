@@ -7,8 +7,12 @@
     },
     "server":{
         "motors":{
-          "left":1,
-          "right":1
+          "left1":1,
+          "left2":2,
+          "left3":3,
+          "right1":4,
+          "right2":5,
+          "right3":6
         }
     }
 }

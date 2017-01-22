@@ -1,16 +1,14 @@
 package com.saintsrobotics.corebot.output;
 
 import com.saintsrobotics.corebot.Robot;
-
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.TalonSRX;
 
 public class Motor {
     
-    private Talon speedController;
+    private TalonSRX speedController;
 
     public Motor(int pin, boolean inverted) {
-        this.speedController = new Talon(pin);
+        this.speedController = new TalonSRX(pin);
         speedController.setInverted(inverted);
     }
 
