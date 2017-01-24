@@ -1,10 +1,5 @@
 package com.saintsrobotics.corebot;
 
-import java.io.File;
-import java.net.UnknownHostException;
-
-import org.simpleHTTPServer.SimpleHTTPServer;
-
 import com.saintsrobotics.corebot.coroutine.Task;
 import com.saintsrobotics.corebot.coroutine.TaskRunner;
 import com.saintsrobotics.corebot.dash.ValueFamily;
@@ -18,11 +13,16 @@ import com.saintsrobotics.corebot.output.Motors;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
 import com.saintsrobotics.corebot.tasks.autonomous.DriveStraightAutonTask;
 import com.saintsrobotics.corebot.tasks.teleop.ArcadeDriveTask;
-import com.saintsrobotics.corebot.tasks.test.ToggleForwardDriveTask;
-
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import org.simpleHTTPServer.SimpleHTTPServer;
+
+import edu.wpi.first.wpilibj.SampleRobot;
+import edu.wpi.first.wpilibj.Ultrasonic;
+
+import java.io.File;
+import java.net.UnknownHostException;
 
 public class Robot extends IterativeRobot {
     
@@ -84,25 +84,52 @@ public class Robot extends IterativeRobot {
 						}
 					}
                 	
+                },
+                new Task() {
+                    @java.lang.Override
+                    protected void run() {
+                        /*DIGITAL
+                        ValueFamily outputs = webDashboard.family( key: "outputs");
+                        Ultrasonic ultra = new Ultrasonic(1,1);
+                        while(true){
+                            String val = ultra.getRangeInches().toString();
+                            outputs.change("ultrasound", val);
+                            logSafe("ultrasound " + val);
+                            wait.forSeconds(0.5);
+
+                        }
+                        */
+                        ValueFamily outputs = webDashboard.family( key: "outputs");
+                        AnalogInputs ultra = new AnalogInputs();
+                        while(true){
+                            String val = String.format("%1$,.2f", ultra.getValue()*645);
+                            outputs.change("ultrasound", val);
+                            logSafe("ultrasound " + val);
+                            wait.forSeconds(0.5);
+
+                        }
+
+                    }
                 }
+
         );
     }
-    
+
     @Override
     public void teleopPeriodic() {
         teleopRunner.run();
     }
-    
+
     @Override
     public void autonomousPeriodic() {
         autonomousRunner.run();
     }
-    
+
     @Override
     public void testPeriodic() {
         testRunner.run();
     }
-    
+
     @Override
     public void disabledInit() {
         if (teleopRunner != null) {
@@ -116,10 +143,10 @@ public class Robot extends IterativeRobot {
         }
         Motors.stopAll();
     }
-    
+
     @Override
     public void disabledPeriodic() {
-        
+
     }
     public static void log(String s){
     	webDashboard.log(s);
