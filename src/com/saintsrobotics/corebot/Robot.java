@@ -9,6 +9,7 @@ import com.saintsrobotics.corebot.output.PracticeMotors;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
 import com.saintsrobotics.corebot.tasks.autonomous.DriveStraightAutonTask;
 import com.saintsrobotics.corebot.tasks.teleop.ArcadeDriveTask;
+import com.saintsrobotics.corebot.tasks.teleop.LifterTask;
 import com.saintsrobotics.corebot.tasks.test.ToggleForwardDriveTask;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -37,6 +38,7 @@ public class Robot extends IterativeRobot {
     public void teleopInit() {
         teleopRunner = new TaskRunner(
                 new ArcadeDriveTask(),
+                new LifterTask(),
                 new UpdateMotors()
         );
     }
