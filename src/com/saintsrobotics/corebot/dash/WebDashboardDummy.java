@@ -42,4 +42,8 @@ public class WebDashboardDummy implements WebDashboard{
 		Robot.logSafe(s);
 		
 	}
+	@Override
+	public void save() {
+		
+	}
 }

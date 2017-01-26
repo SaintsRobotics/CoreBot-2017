@@ -13,9 +13,12 @@ import com.saintsrobotics.corebot.output.Motors;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
 import com.saintsrobotics.corebot.tasks.autonomous.DriveStraightAutonTask;
 import com.saintsrobotics.corebot.tasks.teleop.ArcadeDriveTask;
+
 import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
+
 import org.simpleHTTPServer.SimpleHTTPServer;
 
 import edu.wpi.first.wpilibj.SampleRobot;
@@ -58,6 +61,7 @@ public class Robot extends IterativeRobot {
                 new ArcadeDriveTask(),
                 new UpdateMotors()
         );
+        webDashboard.save();
     }
     
     @Override
@@ -66,20 +70,21 @@ public class Robot extends IterativeRobot {
                 new DriveStraightAutonTask(),
                 new UpdateMotors()
         );
+        webDashboard.save();
     }
     
+	
     @Override
     public void testInit() {
+    	ValueFamily outputs = webDashboard.family("outputs");
         testRunner = new TaskRunner(
                 new Task(){
 					@Override
 					protected void run() {
-						ValueFamily outputs = webDashboard.family("outputs");
-						AnalogGyro gyro = new AnalogGyro(0);
 						while(true){
-							String val = String.format("%1$,.2f", gyro.getAngle());
+							String val = String.format("%1$,.2f", sensors.gyro.getAngle());
 							outputs.change("gyro", val);
-							logSafe("gyro " + val);
+							//logSafe("gyro " + val);
 							wait.forSeconds(0.5);
 						}
 					}
@@ -88,6 +93,7 @@ public class Robot extends IterativeRobot {
                 new Task() {
                     @java.lang.Override
                     protected void run() {
+                    	ValueFamily inputs = webDashboard.family("inputs");
                         /*DIGITAL
                         ValueFamily outputs = webDashboard.family( key: "outputs");
                         Ultrasonic ultra = new Ultrasonic(1,1);
@@ -99,12 +105,10 @@ public class Robot extends IterativeRobot {
 
                         }
                         */
-                        ValueFamily outputs = webDashboard.family( key: "outputs");
-                        AnalogInputs ultra = new AnalogInputs();
                         while(true){
-                            String val = String.format("%1$,.2f", ultra.getValue()*645);
-                            outputs.change("ultrasound", val);
-                            logSafe("ultrasound " + val);
+                            String val = String.format("%1$,.2f", sensors.ultra.getVoltage()/0.0098);
+                            outputs.change("distance", val);
+                            //logSafe("distance " + val);
                             wait.forSeconds(0.5);
 
                         }
@@ -142,6 +146,7 @@ public class Robot extends IterativeRobot {
             testRunner.disable();
         }
         Motors.stopAll();
+        webDashboard.save();
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.saintsrobotics.corebot.dash;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.java_websocket.WebSocket;
@@ -30,41 +31,47 @@ public class WebDashboardActual extends WebSocketServer implements WebDashboard 
 	}
 	private WebSocket defaultSocket;
 	
-	
+	private Path jsonPath = Paths.get("/home/lvuser/html/define.json");
 	
 	public WebDashboardActual() throws UnknownHostException {
 		super(new InetSocketAddress(1899));
 		try {
-			values = new JSONObject(new String(Files.readAllBytes(Paths.get("/home/lvuser/html/define.json"))));
+			values = new JSONObject(new String(Files.readAllBytes(jsonPath)));
 			//Robot.log(new String(Files.readAllBytes(Paths.get("/home/lvuser/html/define.json"))));
-		} catch (JSONException e) {
-			Robot.log("JSONException in WebDashboard Boot!");
-		} catch (IOException e) {
-			Robot.log("IOException in WebDashboard Boot!");
-			Robot.log(e.getMessage());
+		} catch (JSONException | IOException e) {
+			Robot.logSafe(e.getClass().getName() + " in WebDashboard Boot!");
+			Robot.logSafe(e.getMessage());
+		}
+	}
+	public void save(){
+		try {
+			Files.write(jsonPath, values.toString(2).getBytes());
+		} catch (JSONException | IOException e) {
+			Robot.logSafe(e.getClass().getName() + " in WebDashboard Boot!");
+			Robot.logSafe(e.getMessage());
 		}
 	}
 	@Override
 	public void onOpen(WebSocket conn, ClientHandshake handshake) {
-		Robot.log("Connected to " + conn.getRemoteSocketAddress().toString());
+		Robot.logSafe("Connected to " + conn.getRemoteSocketAddress().toString());
 	}
 
 	@Override
 	public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-		Robot.log("closed " + conn.getRemoteSocketAddress().toString() + " with code " + code + " because " + reason + "; closed by " + (remote ? "remote":"local"));
+		Robot.logSafe("closed " + conn.getRemoteSocketAddress().toString() + " with code " + code + " because " + reason + "; closed by " + (remote ? "remote":"local"));
 	}
 
 	@Override
 	public void onMessage(WebSocket conn, String message) {
 		this.defaultSocket = conn;
-		Robot.log("Message: " + message);
+		//Robot.logSafe("Message: " + message);
 		if(message.equals("Debug!")){
 			Robot.log(values.toString());
 			return;
 		}
 		JSONObject json = new JSONObject(message);
 		if(json.getString("type").equals("error")){
-			Robot.log(json.toString());
+			//Robot.logSafe(json.toString());
 			return;
 			//welp
 			//TODO: actually fix this
@@ -115,7 +122,7 @@ public class WebDashboardActual extends WebSocketServer implements WebDashboard 
 	}
 	@Override
 	public void onError(WebSocket conn, Exception ex) {
-		Robot.log("ERROR: " + ex.getMessage());
+		Robot.logSafe("ERROR: " + ex.getMessage());
 	}
 	
 }

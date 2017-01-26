@@ -8,4 +8,5 @@ public interface WebDashboard {
 	public void send(String s);
 	public void log(String s);
 	public void log(String s, String color);
+	public void save();
 }
