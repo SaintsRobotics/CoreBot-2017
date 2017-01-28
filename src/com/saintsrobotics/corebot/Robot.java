@@ -15,6 +15,7 @@ import com.saintsrobotics.corebot.tasks.test.TestMotorsTask;
 import com.saintsrobotics.corebot.tasks.test.ToggleForwardDriveTask;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,9 +37,13 @@ public class Robot extends IterativeRobot {
     private TaskRunner autonomousRunner;
     private TaskRunner testRunner;
 
+    private Preferences prefs;
+
     @Override
     public void robotInit() {
-        new Thread(() -> CameraServer.getInstance().startAutomaticCapture()).start();
+        prefs = Preferences.getInstance();
+        new Thread(() -> CameraServer.getInstance().startAutomaticCapture()
+                .setResolution(prefs.getInt("width", 320), prefs.getInt("height", 240))).start();
         visionTable = NetworkTable.getTable("/GRIP/myContoursReport");
         sensors.init();
         motors.init();
