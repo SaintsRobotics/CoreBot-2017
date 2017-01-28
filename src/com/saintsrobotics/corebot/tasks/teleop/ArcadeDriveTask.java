@@ -2,7 +2,7 @@ package com.saintsrobotics.corebot.tasks.teleop;
 
 import com.saintsrobotics.corebot.Robot;
 import com.saintsrobotics.corebot.coroutine.RepeatingTask;
-import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ArcadeDriveTask extends RepeatingTask {
 
@@ -12,20 +12,18 @@ public class ArcadeDriveTask extends RepeatingTask {
     @Override
     protected void doOnRepeat() {
         if (Robot.oi.drive.buttons.A()) {
-            turnMultiplier -= 0.01;
-            DriverStation.reportWarning("Turn Multiplier: " + turnMultiplier, false);
+            turnMultiplier = Math.max(0, turnMultiplier - 0.015625);
         } else if (Robot.oi.drive.buttons.B()) {
-            turnMultiplier += 0.01;
-            DriverStation.reportWarning("Turn Multiplier: " + turnMultiplier, false);
+            turnMultiplier = Math.min(1, turnMultiplier + 0.015625);
         }
+        SmartDashboard.putNumber("Turn Multiplier", turnMultiplier);
 
         if (Robot.oi.drive.buttons.X()) {
-            forwardMultiplier -= 0.01;
-            DriverStation.reportWarning("Forward Multiplier: " + forwardMultiplier, false);
+            forwardMultiplier = Math.max(0, forwardMultiplier - 0.015625);
         } else if (Robot.oi.drive.buttons.Y()) {
-            forwardMultiplier += 0.01;
-            DriverStation.reportWarning("Forward Multiplier: " + forwardMultiplier, false);
+            forwardMultiplier = Math.min(1, forwardMultiplier + 0.015625);
         }
+        SmartDashboard.putNumber("Forward Multiplier", forwardMultiplier);
 
         double forward = -Robot.oi.drive.axes.leftStickY() * forwardMultiplier;
         double turn = Robot.oi.drive.axes.rightStickX() * turnMultiplier;
