@@ -10,5 +10,8 @@ public abstract class RunEachFrameTask extends Task {
         }
     }
 
+    /**
+     * Runs this method once per frame. Don't wait inside.
+     */
     protected abstract void runEachFrame();
 }

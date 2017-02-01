@@ -8,6 +8,9 @@ public abstract class RunContinuousTask extends Task {
             runContinuously();
         }
     }
-    
+
+    /**
+     * Runs this method in a while loop. Must wait inside.
+     */
     protected abstract void runContinuously();
 }
