@@ -65,12 +65,17 @@ public class OI {
                 this.joystick = joystick;
             }
         
-            public double leftStickX() { return joystick.getRawAxis(0); }
-            public double leftStickY() { return joystick.getRawAxis(1); }
-            public double leftTrigger() { return joystick.getRawAxis(2); }
-            public double rightTrigger() { return joystick.getRawAxis(3); }
-            public double rightStickX() { return joystick.getRawAxis(4); }
-            public double rightStickY() { return joystick.getRawAxis(5); }
+            public double leftStickX() { return ramp(joystick.getRawAxis(0)); }
+            public double leftStickY() { return ramp(joystick.getRawAxis(1)); }
+            public double leftTrigger() { return ramp(joystick.getRawAxis(2)); }
+            public double rightTrigger() { return ramp(joystick.getRawAxis(3)); }
+            public double rightStickX() { return ramp(joystick.getRawAxis(4)); }
+            public double rightStickY() { return ramp(joystick.getRawAxis(5)); }
+
+            private double ramp(double rawAxis) {
+                if (Math.abs(rawAxis) < 0.15) return 0;
+                else return rawAxis;
+            }
         }
         
         public static class XboxButtons {

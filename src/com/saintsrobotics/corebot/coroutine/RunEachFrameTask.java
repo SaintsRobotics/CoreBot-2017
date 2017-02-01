@@ -1,14 +1,14 @@
 package com.saintsrobotics.corebot.coroutine;
 
-public abstract class RepeatingTask extends Task {
-    
+public abstract class RunEachFrameTask extends Task {
+
     @Override
     protected void run() {
         while (true) {
-            doOnRepeat();
+            runEachFrame();
             wait.forFrame();
         }
     }
-    
-    protected abstract void doOnRepeat();
+
+    protected abstract void runEachFrame();
 }

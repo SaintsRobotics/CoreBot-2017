@@ -1,16 +1,16 @@
 package com.saintsrobotics.corebot.tasks.teleop;
 
 import com.saintsrobotics.corebot.Robot;
-import com.saintsrobotics.corebot.coroutine.RepeatingTask;
+import com.saintsrobotics.corebot.coroutine.RunEachFrameTask;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class ArcadeDriveTask extends RepeatingTask {
+public class ArcadeDriveTask extends RunEachFrameTask {
 
     private double forwardMultiplier = 1;
     private double turnMultiplier = 1;
 
     @Override
-    protected void doOnRepeat() {
+    protected void runEachFrame() {
         if (Robot.oi.drive.buttons.A()) {
             turnMultiplier = Math.max(0, turnMultiplier - 0.015625);
         } else if (Robot.oi.drive.buttons.B()) {
@@ -25,10 +25,10 @@ public class ArcadeDriveTask extends RepeatingTask {
         }
         SmartDashboard.putNumber("Forward Multiplier", forwardMultiplier);
 
-        double forward = -Robot.oi.drive.axes.leftStickY() * forwardMultiplier;
+        double forward = Robot.oi.drive.axes.leftStickY() * forwardMultiplier;
         double turn = Robot.oi.drive.axes.rightStickX() * turnMultiplier;
         
-        Robot.motors.leftMotors.set(forward + turn);
-        Robot.motors.rightMotors.set(forward - turn);
+        Robot.motors.leftMotors.set(-forward + turn);
+        Robot.motors.rightMotors.set(forward + turn);
     }
 }

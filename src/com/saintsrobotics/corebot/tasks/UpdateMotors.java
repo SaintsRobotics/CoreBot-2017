@@ -2,13 +2,12 @@ package com.saintsrobotics.corebot.tasks;
 
 
 import com.saintsrobotics.corebot.Robot;
-import com.saintsrobotics.corebot.coroutine.RepeatingTask;
-import com.saintsrobotics.corebot.coroutine.Task;
+import com.saintsrobotics.corebot.coroutine.RunEachFrameTask;
 
-public class UpdateMotors extends RepeatingTask {
+public class UpdateMotors extends RunEachFrameTask {
 
 	@Override
-	protected void doOnRepeat() {
+	protected void runEachFrame() {
 		Robot.motors.update();
 	}
 }

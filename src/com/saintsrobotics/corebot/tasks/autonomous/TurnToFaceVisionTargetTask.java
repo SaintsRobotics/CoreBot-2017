@@ -1,12 +1,13 @@
 package com.saintsrobotics.corebot.tasks.autonomous;
 
 import com.saintsrobotics.corebot.Robot;
-import com.saintsrobotics.corebot.coroutine.RepeatingTask;
+import com.saintsrobotics.corebot.coroutine.RunEachFrameTask;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class TurnToFaceVisionTargetTask extends RepeatingTask {
+public class TurnToFaceVisionTargetTask extends RunEachFrameTask {
 
     @Override
-    protected void doOnRepeat() {
+    protected void runEachFrame() {
         double[] centerXArr = Robot.visionTable.getNumberArray("centerX", new double[0]);
         double[] centerYArr = Robot.visionTable.getNumberArray("centerY", new double[0]);
         if (centerXArr.length == 2 && centerYArr.length == 2) {
@@ -20,12 +21,18 @@ public class TurnToFaceVisionTargetTask extends RepeatingTask {
             double normalizedLiftPositionX = liftPositionX/Robot.cameraWidth;
             double relativeNormalizedLiftPositionX = normalizedLiftPositionX - 0.5;
 
-            double maxMotorPower = 0.4;
+            double motorPower = 2 * relativeNormalizedLiftPositionX;
+            if (motorPower > 1) motorPower = 1;
+            if (motorPower < -1) motorPower = -1;
+            motorPower = Math.sqrt(motorPower);
 
-            double motorPower = 2 * relativeNormalizedLiftPositionX / maxMotorPower;
+            SmartDashboard.putNumber("Vision Target Position", motorPower);
 
             Robot.motors.rightMotors.set(motorPower);
-            Robot.motors.leftMotors.set(-motorPower);
+            Robot.motors.leftMotors.set(motorPower);
+        } else {
+            Robot.motors.rightMotors.set(0);
+            Robot.motors.leftMotors.set(0);
         }
     }
 }

@@ -47,7 +47,7 @@ public abstract class Motors {
         leftMotors = new MotorGroup(motorLeftDrive1, motorLeftDrive2);
         rightMotors = new MotorGroup(motorRightDrive1, motorRightDrive2);
 
-        liftMotors = new MotorGroup(motorLift1, motorLift1);
+        liftMotors = new MotorGroup(motorLift1, motorLift2);
         
         allMotors = new MotorGroup(leftMotors, rightMotors);
     }

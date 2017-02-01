@@ -1,12 +1,12 @@
 package com.saintsrobotics.corebot.tasks.test;
 
 import com.saintsrobotics.corebot.Robot;
-import com.saintsrobotics.corebot.coroutine.RepeatingTask;
+import com.saintsrobotics.corebot.coroutine.RunContinuousTask;
 
-public class TestShifterTask extends RepeatingTask {
+public class TestShifterTask extends RunContinuousTask {
 
     @Override
-    protected void doOnRepeat() {
+    protected void runContinuously() {
         double time = Robot.prefs.getDouble("time", 1);
         double low = Robot.prefs.getDouble("low", -1);
         double high = Robot.prefs.getDouble("high", -1);
@@ -15,10 +15,10 @@ public class TestShifterTask extends RepeatingTask {
             wait.forFrame();
         }
 
-        Robot.rightShifter.set(low);
+        Robot.arm.setAngle(low);
         wait.forSeconds(time);
 
-        Robot.rightShifter.set(high);
+        Robot.arm.setAngle(high);
         wait.forSeconds(time);
     }
 }
