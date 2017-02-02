@@ -14,7 +14,6 @@ import com.saintsrobotics.corebot.tasks.autonomous.TurnToFaceVisionTargetTask;
 import com.saintsrobotics.corebot.tasks.teleop.ArcadeDriveTask;
 import com.saintsrobotics.corebot.tasks.teleop.GearDropperTask;
 import com.saintsrobotics.corebot.tasks.teleop.LifterTask;
-import com.saintsrobotics.corebot.tasks.teleop.ShifterTask;
 import com.saintsrobotics.corebot.tasks.test.TestMotorsTask;
 import com.saintsrobotics.corebot.tasks.test.TestShifterTask;
 import edu.wpi.cscore.UsbCamera;
@@ -30,7 +29,7 @@ public class Robot extends IterativeRobot {
     public static double MOTOR_RAMPING = 0.05;
 
     public static double GEAR_DROPPER_OUT = 90;
-    public static double GEAR_DROPPER_IN = 65;
+    public static double GEAR_DROPPER_IN = 55;
 
     public static double RIGHT_SHIFTER_OUT = 78;
     public static double RIGHT_SHIFTER_IN = 108;
@@ -83,7 +82,7 @@ public class Robot extends IterativeRobot {
         teleopRunner = new TaskRunner(
                 new ArcadeDriveTask(),
                 new LifterTask(),
-                new ShifterTask(),
+//                new ShifterTask(),
                 new GearDropperTask(),
                 new UpdateMotors()
         );
