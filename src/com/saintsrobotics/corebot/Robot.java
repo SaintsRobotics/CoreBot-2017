@@ -1,5 +1,6 @@
 package com.saintsrobotics.corebot;
 
+import com.saintsrobotics.corebot.coroutine.RunEachFrameTask;
 import com.saintsrobotics.corebot.coroutine.Task;
 import com.saintsrobotics.corebot.coroutine.TaskRunner;
 import com.saintsrobotics.corebot.input.OI;
@@ -18,6 +19,7 @@ import com.saintsrobotics.corebot.tasks.test.TestMotorsTask;
 import com.saintsrobotics.corebot.tasks.test.TestShifterTask;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -28,8 +30,8 @@ public class Robot extends IterativeRobot {
 
     public static double MOTOR_RAMPING = 0.05;
 
-    public static double GEAR_DROPPER_OUT = 90;
-    public static double GEAR_DROPPER_IN = 55;
+    public static double GEAR_DROPPER_OUT = 80;
+    public static double GEAR_DROPPER_IN = 125;
 
     public static double RIGHT_SHIFTER_OUT = 78;
     public static double RIGHT_SHIFTER_IN = 108;
@@ -54,6 +56,9 @@ public class Robot extends IterativeRobot {
     private TaskRunner autonomousRunner;
     private TaskRunner testRunner;
 
+    public static Encoder gearDropEncoder;
+    public static int GEAR_DROP_MAX = 0;
+
     @Override
     public void robotInit() {
         prefs = Preferences.getInstance();
@@ -74,17 +79,33 @@ public class Robot extends IterativeRobot {
         taskChooser.addObject("TurnToFaceVisionTargetTask", new TurnToFaceVisionTargetTask());
         taskChooser.addObject("TestShifterTask", new TestShifterTask());
         SmartDashboard.putData("Autonomous", taskChooser);
+
+        gearDropEncoder =  new Encoder(8,9);
     }
 
 
     @Override
     public void teleopInit() {
+        GEAR_DROP_MAX = prefs.getInt("GEAR_DROP_MAX", 0);
+        gearDropEncoder.reset();
         teleopRunner = new TaskRunner(
                 new ArcadeDriveTask(),
                 new LifterTask(),
 //                new ShifterTask(),
                 new GearDropperTask(),
-                new UpdateMotors()
+                new RunEachFrameTask() {
+                    @Override
+                    protected void runEachFrame() {
+                        if (oi.drive.buttons.Y()) {
+                            gearDropEncoder.reset();
+                        }
+                        if (oi.drive.axes.rightTrigger() != 0 || oi.drive.axes.leftTrigger() != 0) {
+                            motors.gearDrop.set(-oi.drive.axes.rightTrigger() / 2 + oi.drive.axes.leftTrigger() / 2);
+                        }
+                        SmartDashboard.putNumber("Encoder", gearDropEncoder.get());
+                    }
+                },
+        new UpdateMotors()
         );
     }
 

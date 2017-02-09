@@ -22,7 +22,7 @@ public class TestMotorsTask extends RunContinuousTask {
         wait.forSeconds(time);
         Robot.motors.lift2.set(speed);
         wait.forSeconds(time);
-        Robot.motors.allMotors.set(0);
+        Robot.motors.allDriveMotors.set(0);
         wait.forSeconds(time*2);
     }
 }

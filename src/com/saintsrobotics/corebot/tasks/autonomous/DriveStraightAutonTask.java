@@ -7,8 +7,8 @@ public class DriveStraightAutonTask extends Task {
     
     @Override
     protected void run() {
-        Robot.motors.allMotors.set(0.3);
+        Robot.motors.allDriveMotors.set(0.3);
         wait.forSeconds(3);
-        Robot.motors.allMotors.set(0);
+        Robot.motors.allDriveMotors.set(0);
     }
 }

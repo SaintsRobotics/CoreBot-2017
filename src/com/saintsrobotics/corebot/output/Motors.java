@@ -14,42 +14,47 @@ public abstract class Motors {
     public final MotorGroup leftDrive2;
     public final MotorGroup rightDrive1;
     public final MotorGroup rightDrive2;
-    public final MotorGroup lift1;
-    public final MotorGroup lift2;
     public final MotorGroup leftMotors;
     public final MotorGroup rightMotors;
+    public final MotorGroup allDriveMotors;
+    public final MotorGroup lift1;
+    public final MotorGroup lift2;
     public final MotorGroup liftMotors;
-    public final MotorGroup allMotors;
-    
+    public final MotorGroup gearDrop;
+
     protected Motors(int leftDrivePin1, int leftDrivePin2,
                      int rightDrivePin1, int rightDrivePin2,
-                     int lifterPin1, int lifterPin2) {
+                     int lifterPin1, int lifterPin2, int gearDropPin) {
         Motor motorLeftDrive1 = new Motor(leftDrivePin1);
         Motor motorLeftDrive2 = new Motor(leftDrivePin2);
         Motor motorRightDrive1 = new Motor(rightDrivePin1);
         Motor motorRightDrive2 = new Motor(rightDrivePin2);
         Motor motorLift1 = new Motor(lifterPin1);
         Motor motorLift2 = new Motor(lifterPin2);
+        Motor motorGearDrop = new Motor(gearDropPin);
+
         motorList.add(motorLeftDrive1);
         motorList.add(motorLeftDrive2);
         motorList.add(motorRightDrive1);
         motorList.add(motorRightDrive2);
         motorList.add(motorLift1);
         motorList.add(motorLift2);
-        
+        motorList.add(motorGearDrop);
+
         leftDrive1 = new MotorGroup(motorLeftDrive1);
         leftDrive2 = new MotorGroup(motorLeftDrive2);
         rightDrive1 = new MotorGroup(motorRightDrive1);
         rightDrive2 = new MotorGroup(motorRightDrive2);
         lift1 = new MotorGroup(motorLift1);
         lift2 = new MotorGroup(motorLift2);
-        
+        gearDrop = new MotorGroup(motorGearDrop);
+
         leftMotors = new MotorGroup(motorLeftDrive1, motorLeftDrive2);
         rightMotors = new MotorGroup(motorRightDrive1, motorRightDrive2);
 
         liftMotors = new MotorGroup(motorLift1, motorLift2);
         
-        allMotors = new MotorGroup(leftMotors, rightMotors);
+        allDriveMotors = new MotorGroup(leftMotors, rightMotors);
     }
     
     public void init() {
