@@ -18,10 +18,7 @@ import com.saintsrobotics.corebot.tasks.teleop.LifterTask;
 import com.saintsrobotics.corebot.tasks.test.TestMotorsTask;
 import com.saintsrobotics.corebot.tasks.test.TestShifterTask;
 import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -59,6 +56,8 @@ public class Robot extends IterativeRobot {
     public static Encoder gearDropEncoder;
     public static int GEAR_DROP_MAX = 0;
 
+    public static AnalogInput ultrasound;
+
     @Override
     public void robotInit() {
         prefs = Preferences.getInstance();
@@ -81,6 +80,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData("Autonomous", taskChooser);
 
         gearDropEncoder =  new Encoder(8,9);
+        ultrasound = new AnalogInput(1);
     }
 
 
@@ -113,7 +113,14 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         autonomousRunner = new TaskRunner(
                 taskChooser.getSelected(),
-                new UpdateMotors()
+                new RunEachFrameTask() {
+                    @Override
+                    protected void runEachFrame() {
+                        SmartDashboard.putNumber("Ultrasound",
+                                (Robot.ultrasound.getAverageVoltage() - 0.279) / (4.52 - 0.279) * 9 * 12);
+                    }
+                }//,
+//                new UpdateMotors()
         );
     }
 

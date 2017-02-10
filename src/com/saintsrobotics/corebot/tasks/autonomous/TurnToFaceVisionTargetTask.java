@@ -2,12 +2,15 @@ package com.saintsrobotics.corebot.tasks.autonomous;
 
 import com.saintsrobotics.corebot.Robot;
 import com.saintsrobotics.corebot.coroutine.RunEachFrameTask;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TurnToFaceVisionTargetTask extends RunEachFrameTask {
 
     @Override
     protected void runEachFrame() {
+        double motorPower = 0;
+
         double[] centerXArr = Robot.visionTable.getNumberArray("centerX", new double[0]);
         double[] centerYArr = Robot.visionTable.getNumberArray("centerY", new double[0]);
         if (centerXArr.length == 2 && centerYArr.length == 2) {
@@ -19,20 +22,22 @@ public class TurnToFaceVisionTargetTask extends RunEachFrameTask {
 
             double liftPositionX = (leftTargetX + rightTargetX)/2;
             double normalizedLiftPositionX = liftPositionX/Robot.cameraWidth;
-            double relativeNormalizedLiftPositionX = normalizedLiftPositionX - 0.5;
+            double relativeNormalizedLiftPositionX = 2 * (normalizedLiftPositionX - 0.5);
 
-            double motorPower = 2 * relativeNormalizedLiftPositionX;
-            if (motorPower > 1) motorPower = 1;
-            if (motorPower < -1) motorPower = -1;
-            motorPower = Math.sqrt(motorPower);
+            SmartDashboard.putNumber("liftPositionX", liftPositionX);
+            SmartDashboard.putNumber("normalizedLiftPositionX", normalizedLiftPositionX);
+            SmartDashboard.putNumber("relativeNormalizedLiftPositionX", relativeNormalizedLiftPositionX);
 
-            SmartDashboard.putNumber("Vision Target Position", motorPower);
+            motorPower = Math.signum(relativeNormalizedLiftPositionX) * Math.sqrt(Math.abs(relativeNormalizedLiftPositionX));
 
-            Robot.motors.rightMotors.set(motorPower);
-            Robot.motors.leftMotors.set(motorPower);
-        } else {
-            Robot.motors.rightMotors.set(0);
-            Robot.motors.leftMotors.set(0);
+            if (motorPower > 1 || motorPower < -1) {
+                DriverStation.reportError("UNEXPECTED VISION TARGET LOCATION: " + motorPower, false);
+                motorPower = 0;
+            }
+
         }
+        Robot.motors.rightMotors.set(motorPower  * Robot.prefs.getDouble("vision_motor_power", 0));
+        Robot.motors.leftMotors.set(motorPower * Robot.prefs.getDouble("vision_motor_power", 0));
+        SmartDashboard.putNumber("Vision Target Position", motorPower);
     }
 }
