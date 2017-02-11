@@ -1,4 +1,4 @@
-package com.saintsrobotics.corebot.input;
+package com.saintsrobotics.corebot.input.sensors;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 
@@ -11,13 +11,16 @@ public class LimitSwitches {
     
     public final LimitSwitch exampleSwitch;
     
-    LimitSwitches(int exampleSwitchPin) {
+    public LimitSwitches(int exampleSwitchPin) {
         exampleSwitch = new LimitSwitch(exampleSwitchPin);
         switches.add(exampleSwitch);
     }
     
-    void init() {
+    public void init() {
         switches.forEach(LimitSwitch::init);
+    }
+    public void disable(){
+    	switches.forEach(LimitSwitch::disable);
     }
     
     public static class LimitSwitch {
@@ -30,7 +33,13 @@ public class LimitSwitches {
         }
         
         private void init() {
-            switchInput = new DigitalInput(pin);
+        	if(switchInput == null) switchInput = new DigitalInput(pin);
+        }
+        private void disable(){
+        	if(switchInput != null){
+        		switchInput.free();
+        		switchInput = null;
+        	}
         }
         
         public boolean get() {
