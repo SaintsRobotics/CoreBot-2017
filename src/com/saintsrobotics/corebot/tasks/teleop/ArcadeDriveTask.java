@@ -25,10 +25,10 @@ public class ArcadeDriveTask extends RunEachFrameTask {
         }
         SmartDashboard.putNumber("Forward Multiplier", forwardMultiplier);
 
-        double forward = Robot.oi.drive.axes.leftStickY() * forwardMultiplier;
+        double forward = -Robot.oi.drive.axes.leftStickY() * forwardMultiplier;
         double turn = Robot.oi.drive.axes.rightStickX() * turnMultiplier;
         
-        Robot.motors.leftMotors.set(-forward + turn);
-        Robot.motors.rightMotors.set(forward + turn);
+        Robot.motors.leftDrive.set(forward + turn);
+        Robot.motors.rightDrive.set(forward - turn);
     }
 }

@@ -11,15 +11,12 @@ public class Servos {
 
     public ServoWrapper rightShifter;
     public ServoWrapper leftShifter;
-    public ServoWrapper gearDropArm;
 
-    public Servos(int rightShifterPin, int leftShifterPin, int gearDropArmPin) {
+    public Servos(int rightShifterPin, int leftShifterPin) {
         rightShifter = new ServoWrapper(rightShifterPin);
         leftShifter = new ServoWrapper(leftShifterPin);
-        gearDropArm = new ServoWrapper(gearDropArmPin);
         servos.add(rightShifter);
         servos.add(leftShifter);
-        servos.add(gearDropArm);
     }
 
     public void init() {
@@ -43,5 +40,4 @@ public class Servos {
             servo.setAngle(degrees);
         }
     }
-
 }

@@ -1,14 +1,16 @@
 package com.saintsrobotics.corebot;
 
-import com.saintsrobotics.corebot.input.LimitSwitches;
 import com.saintsrobotics.corebot.input.OI;
+import com.saintsrobotics.corebot.input.sensors.LimitSwitches;
 import com.saintsrobotics.corebot.output.Motors;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.tables.ITable;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
