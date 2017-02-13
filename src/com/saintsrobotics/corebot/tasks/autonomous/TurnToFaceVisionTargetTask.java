@@ -36,8 +36,8 @@ public class TurnToFaceVisionTargetTask extends RunEachFrameTask {
             }
 
         }
-        Robot.motors.rightMotors.set(motorPower  * Robot.prefs.getDouble("vision_motor_power", 0));
-        Robot.motors.leftMotors.set(motorPower * Robot.prefs.getDouble("vision_motor_power", 0));
+        Robot.motors.rightDrive.set(motorPower  * Robot.prefs.getDouble("vision_motor_power", 0));
+        Robot.motors.leftDrive.set(motorPower * Robot.prefs.getDouble("vision_motor_power", 0));
         SmartDashboard.putNumber("Vision Target Position", motorPower);
     }
 }

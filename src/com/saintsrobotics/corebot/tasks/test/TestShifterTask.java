@@ -15,10 +15,10 @@ public class TestShifterTask extends RunContinuousTask {
             wait.forFrame();
         }
 
-        Robot.servos.gearDropArm.setAngle(low);
+        Robot.servos.leftShifter.setAngle(low);
         wait.forSeconds(time);
 
-        Robot.servos.gearDropArm.setAngle(high);
+        Robot.servos.leftShifter.setAngle(high);
         wait.forSeconds(time);
     }
 }

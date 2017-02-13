@@ -9,6 +9,7 @@ public abstract class Sensors {
     public final LimitSwitches limitSwitches;
     public final Ultrasound ultrasound;
     public final Potentiometer potentiometer;
+    
     public Sensors(LimitSwitches limitSwitches, Ultrasound ultrasound, Potentiometer potentiometer) {
         this.limitSwitches = limitSwitches;
         this.ultrasound = ultrasound;
@@ -18,9 +19,12 @@ public abstract class Sensors {
     public void init() {
         limitSwitches.init();
         ultrasound.init();
+        potentiometer.init();
     }
-    public void disable(){
-    	limitSwitches.disable();
-    	ultrasound.disable();
+    
+    public void disable() {
+        limitSwitches.disable();
+        ultrasound.disable();
+        potentiometer.disable();
     }
 }

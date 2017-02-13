@@ -9,6 +9,6 @@ public class LifterTask extends RunEachFrameTask {
     protected void runEachFrame() {
         double amount = Robot.oi.drive.axes.rightTrigger() - Robot.oi.drive.axes.leftTrigger();
 
-        Robot.motors.liftMotors.set(amount);
+        Robot.motors.lift.set(amount);
     }
 }
