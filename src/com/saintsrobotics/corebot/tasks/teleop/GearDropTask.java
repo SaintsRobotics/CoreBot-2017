@@ -5,9 +5,10 @@ import com.saintsrobotics.corebot.coroutine.RunContinuousTask;
 import com.saintsrobotics.corebot.util.PID;
 
 public class GearDropTask extends RunContinuousTask {
-	PID armPid = new PID(Robot.prefs.getDouble("P value", 0.1),
-		Robot.prefs.getDouble("I value", 1.0),
-		Robot.prefs.getDouble("D value", 1.0));
+    
+	private PID armPid = new PID(Robot.prefs.getDouble("P value", 0.1),
+		Robot.prefs.getDouble("I value", 0),
+		Robot.prefs.getDouble("D value", 0));
 
 	@Override
 	protected void runContinuously() {
@@ -25,6 +26,5 @@ public class GearDropTask extends RunContinuousTask {
             Robot.motors.gearDrop.set(value);
             wait.forFrame();
         }
-
 	}
 }

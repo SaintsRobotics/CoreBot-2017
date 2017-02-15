@@ -6,8 +6,8 @@ import com.saintsrobotics.corebot.input.OI;
 import com.saintsrobotics.corebot.input.PracticeSensors;
 import com.saintsrobotics.corebot.input.Sensors;
 import com.saintsrobotics.corebot.output.Motors;
-import com.saintsrobotics.corebot.output.PracticeBotMotors;
 import com.saintsrobotics.corebot.output.Servos;
+import com.saintsrobotics.corebot.output.TestBoardMotors;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
 import com.saintsrobotics.corebot.tasks.autonomous.DriveStraightAutonTask;
 import com.saintsrobotics.corebot.tasks.autonomous.TurnToFaceVisionTargetTask;
@@ -44,7 +44,7 @@ public class Robot extends IterativeRobot {
     public static Preferences prefs;
 
     public static Sensors sensors = new PracticeSensors();
-    public static Motors motors = new PracticeBotMotors();
+    public static Motors motors = new TestBoardMotors();
     public static Servos servos = new Servos(9, 8);
     public static OI oi = new OI();
 
