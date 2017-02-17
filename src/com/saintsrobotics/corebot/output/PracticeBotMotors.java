@@ -4,9 +4,9 @@ public class PracticeBotMotors extends Motors {
 
     public PracticeBotMotors() {
         // leftDrivePin, rightDrivePin
-        super(2, 3, 0, 1, 4, 5, 6, 7,
+        super(2, 3, 4, 5, 0, 1, 6, 7,
                 false,
-                false,
+                true,
                 false,
                 false);
     }

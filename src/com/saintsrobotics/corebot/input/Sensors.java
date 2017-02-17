@@ -17,13 +17,13 @@ public abstract class Sensors {
     }
     
     public void init() {
-        limitSwitches.init();
+        if (limitSwitches != null) limitSwitches.init();
         ultrasound.init();
         potentiometer.init();
     }
     
     public void disable() {
-        limitSwitches.disable();
+        if (limitSwitches != null) limitSwitches.disable();
         ultrasound.disable();
         potentiometer.disable();
     }

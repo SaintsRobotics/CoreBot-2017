@@ -7,22 +7,36 @@ public class TestMotorsTask extends RunContinuousTask {
     
     @Override
     protected void runContinuously() {
-        double speed = 0.2;
-        double time = 1;
+        double speed = 0.3;
+        double time = 3;
         
         Robot.motors.leftDrive1.set(speed);
         wait.forSeconds(time);
+        Robot.motors.leftDrive1.set(0);
         Robot.motors.leftDrive2.set(speed);
         wait.forSeconds(time);
+        Robot.motors.leftDrive2.set(0);
         Robot.motors.rightDrive1.set(speed);
         wait.forSeconds(time);
+        Robot.motors.rightDrive1.set(0);
         Robot.motors.rightDrive2.set(speed);
         wait.forSeconds(time);
+        Robot.motors.rightDrive2.set(0);
         Robot.motors.lift1.set(speed);
         wait.forSeconds(time);
+        Robot.motors.lift1.set(0);
         Robot.motors.lift2.set(speed);
         wait.forSeconds(time);
-        Robot.motors.allDrive.set(0);
+        Robot.motors.lift2.set(0);
+    
+        Robot.motors.gearDrop1.set(speed);
+        wait.forSeconds(time);
+        Robot.motors.gearDrop1.set(0);
+    
+        Robot.motors.gearDrop2.set(speed);
+        wait.forSeconds(time);
+        Robot.motors.gearDrop2.set(0);
+        
         wait.forSeconds(time*2);
     }
 }
