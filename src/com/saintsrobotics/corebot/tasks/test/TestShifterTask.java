@@ -7,18 +7,18 @@ public class TestShifterTask extends RunContinuousTask {
 
     @Override
     protected void runContinuously() {
-        double time = Robot.prefs.getDouble("time", 1);
-        double low = Robot.prefs.getDouble("low", -1);
-        double high = Robot.prefs.getDouble("high", -1);
+        double time = Robot.prefs.getDouble("test_shifter_time", 1);
+        double low = Robot.prefs.getDouble("test_shifter_low", -1);
+        double high = Robot.prefs.getDouble("test_shifter_high", -1);
 
         if (low == -1 || high == -1) {
             wait.forFrame();
         }
 
-        Robot.servos.leftShifter.setAngle(low);
+        Robot.servos.rightShifter.setAngle(low);
         wait.forSeconds(time);
 
-        Robot.servos.leftShifter.setAngle(high);
+        Robot.servos.rightShifter.setAngle(high);
         wait.forSeconds(time);
     }
 }

@@ -15,6 +15,7 @@ import com.saintsrobotics.corebot.tasks.autonomous.TurnToFaceVisionTargetTask;
 import com.saintsrobotics.corebot.tasks.teleop.ArcadeDriveTask;
 import com.saintsrobotics.corebot.tasks.teleop.GearDropTask;
 import com.saintsrobotics.corebot.tasks.teleop.LifterTask;
+import com.saintsrobotics.corebot.tasks.teleop.ShifterTask;
 import com.saintsrobotics.corebot.tasks.test.TestGearDropTask;
 import com.saintsrobotics.corebot.tasks.test.TestMotorsTask;
 import com.saintsrobotics.corebot.tasks.test.TestShifterTask;
@@ -36,7 +37,7 @@ public class Robot extends IterativeRobot {
     public static double GEAR_DROPPER_IN = 125;
 
     public static double RIGHT_SHIFTER_OUT = 78;
-    public static double RIGHT_SHIFTER_IN = 108;
+    public static double RIGHT_SHIFTER_IN = 116;
 
     public static double LEFT_SHIFTER_OUT = 76;
     public static double LEFT_SHIFTER_IN = 56;
@@ -89,7 +90,7 @@ public class Robot extends IterativeRobot {
         teleopRunner = new TaskRunner(
                 new ArcadeDriveTask(),
                 new LifterTask(),
-//                new ShifterTask(),
+                new ShifterTask(),
                 new GearDropTask(),
                 new RunEachFrameTask() {
                     @Override
