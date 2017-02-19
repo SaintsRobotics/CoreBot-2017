@@ -7,8 +7,8 @@ public class ShifterTask extends RunContinuousTask {
 
     @Override
     protected void runContinuously() {
-        wait.until(() -> Robot.oi.drive.buttons.DPAD_LEFT() || Robot.oi.drive.buttons.DPAD_RIGHT());
-        if (Robot.oi.drive.buttons.DPAD_LEFT()) { // High gear
+        wait.until(() -> Robot.oi.drive.buttons.L3() || Robot.oi.drive.buttons.R3());
+        if (Robot.oi.drive.buttons.L3()) { // High gear
             Robot.servos.rightShifter.setAngle(Robot.RIGHT_SHIFTER_OUT - 15);
             Robot.servos.leftShifter.setAngle(Robot.LEFT_SHIFTER_OUT + 15);
 
@@ -16,7 +16,7 @@ public class ShifterTask extends RunContinuousTask {
 
             Robot.servos.rightShifter.setAngle(Robot.RIGHT_SHIFTER_OUT);
             Robot.servos.leftShifter.setAngle(Robot.LEFT_SHIFTER_OUT);
-        } else if (Robot.oi.drive.buttons.DPAD_RIGHT()) { // Low gear
+        } else if (Robot.oi.drive.buttons.R3()) { // Low gear
             Robot.servos.rightShifter.setAngle(Robot.RIGHT_SHIFTER_IN + 15);
             Robot.servos.leftShifter.setAngle(Robot.LEFT_SHIFTER_IN - 15);
 
