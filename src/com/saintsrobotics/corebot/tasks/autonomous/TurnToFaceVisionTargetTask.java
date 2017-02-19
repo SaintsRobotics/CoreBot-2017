@@ -26,7 +26,7 @@ public class TurnToFaceVisionTargetTask extends RunEachFrameTask {
         
         double lowestPosition = Integer.MAX_VALUE;
         double secondLowestPosition = Integer.MAX_VALUE;
-        
+        double forwardSpeed = Robot.prefs.getDouble("vision_forward_speed",0);
         // if we have more than two data points and the two lists have the same length (should always be true)
         if (centerYArr.length == centerXArr.length && centerYArr.length >= 2) {
             for (int i = 0; i < centerYArr.length; i++) {
@@ -78,8 +78,11 @@ public class TurnToFaceVisionTargetTask extends RunEachFrameTask {
                 motorPower = Math.signum(motorPower) * maxMotorPower;
             }
             
-            Robot.motors.rightDrive.set(motorPower);
-            Robot.motors.leftDrive.set(-motorPower);
+            Robot.motors.rightDrive.set(motorPower+ forwardSpeed);
+            Robot.motors.leftDrive.set(-motorPower+ forwardSpeed);
+        }else{
+        	Robot.motors.rightDrive.set(forwardSpeed);
+            Robot.motors.leftDrive.set(forwardSpeed);
         }
     }
 }

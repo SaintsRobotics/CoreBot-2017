@@ -8,6 +8,7 @@ import com.saintsrobotics.corebot.input.PracticeSensors;
 import com.saintsrobotics.corebot.input.Sensors;
 import com.saintsrobotics.corebot.output.CompetitionBotMotors;
 import com.saintsrobotics.corebot.output.Motors;
+import com.saintsrobotics.corebot.output.PracticeBotMotors;
 import com.saintsrobotics.corebot.output.Servos;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
 import com.saintsrobotics.corebot.tasks.autonomous.DriveStraightAutonTask;
@@ -19,6 +20,7 @@ import com.saintsrobotics.corebot.tasks.teleop.ShifterTask;
 import com.saintsrobotics.corebot.tasks.test.TestGearDropTask;
 import com.saintsrobotics.corebot.tasks.test.TestMotorsTask;
 import com.saintsrobotics.corebot.tasks.test.TestShifterTask;
+
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -47,7 +49,7 @@ public class Robot extends IterativeRobot {
     public static Preferences prefs;
 
     public static Sensors sensors = new PracticeSensors();
-    public static Motors motors = new CompetitionBotMotors();
+    public static Motors motors = new PracticeBotMotors();
     public static Servos servos = new Servos(9, 8);
     public static OI oi = new OI();
 
@@ -74,9 +76,9 @@ public class Robot extends IterativeRobot {
         motors.init();
         servos.init();
         oi.init();
-        taskChooser.addDefault("DriveStraightTask", DriveStraightAutonTask::new);
+        taskChooser.addObject("DriveStraightTask", DriveStraightAutonTask::new);
         taskChooser.addObject("TestMotorsTask", TestMotorsTask::new);
-        taskChooser.addObject("TurnToFaceVisionTargetTask", TurnToFaceVisionTargetTask::new);
+        taskChooser.addDefault("TurnToFaceVisionTargetTask", TurnToFaceVisionTargetTask::new);
         taskChooser.addObject("TestShifterTask", TestShifterTask::new);
         taskChooser.addObject("TestGearDropTask", TestGearDropTask::new);
         SmartDashboard.putData("Autonomous", taskChooser);

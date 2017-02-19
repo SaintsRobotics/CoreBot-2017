@@ -1,7 +1,10 @@
 package com.saintsrobotics.corebot.output;
 
 import com.saintsrobotics.corebot.Robot;
+
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.TalonSRX;
+import edu.wpi.first.wpilibj.Victor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,12 +109,11 @@ public abstract class Motors {
             }
         }
     }
-    
     public static class Motor {
         
         private final int pin;
         private final boolean inverted;
-        private TalonSRX speedController;
+        private SpeedController speedController;
     
         Motor(int pin, boolean inverted) {
             this.pin = pin;
@@ -119,7 +121,7 @@ public abstract class Motors {
         }
         
         private void init() {
-            speedController = new TalonSRX(pin);
+            speedController = new Victor(pin);
             speedController.setInverted(inverted);
         }
         
