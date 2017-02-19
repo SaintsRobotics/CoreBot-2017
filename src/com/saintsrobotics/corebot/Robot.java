@@ -6,7 +6,6 @@ import com.saintsrobotics.corebot.coroutine.TaskRunner;
 import com.saintsrobotics.corebot.input.OI;
 import com.saintsrobotics.corebot.input.PracticeSensors;
 import com.saintsrobotics.corebot.input.Sensors;
-import com.saintsrobotics.corebot.output.CompetitionBotMotors;
 import com.saintsrobotics.corebot.output.Motors;
 import com.saintsrobotics.corebot.output.PracticeBotMotors;
 import com.saintsrobotics.corebot.output.Servos;

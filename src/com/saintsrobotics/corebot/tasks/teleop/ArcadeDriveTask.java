@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class ArcadeDriveTask extends RunEachFrameTask {
 
     private double forwardMultiplier = 1;
-    private double turnMultiplier = 1;
+    private double turnMultiplier = 0.8;
 
     @Override
     protected void runEachFrame() {
