@@ -92,9 +92,9 @@ public class Robot extends IterativeRobot {
         GEAR_DROPPER_IN = prefs.getInt("GEAR_DROPPER_IN", 0);
         teleopRunner = new TaskRunner(
                 new ArcadeDriveTask(),
-                //new LifterTask(),
-                //new ShifterTask(),
-                //new GearDropTask(),
+                new LifterTask(),
+                new ShifterTask(),
+                new GearDropTask(),
                 new RunEachFrameTask() {
                     @Override
                     protected void runEachFrame() {
