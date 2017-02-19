@@ -110,16 +110,7 @@ public class Robot extends IterativeRobot {
     	
         autonomousRunner = new TaskRunner(
                 taskChooser.getSelected().get(),
-                new UpdateMotors(),
-                new RunEachFrameTask(){
-
-					@Override
-					protected void runEachFrame() {
-						DriverStation.reportError("BLUHHHHHH", false);
-						
-					}
-                	
-                }
+                new UpdateMotors()
         );
     }
 
