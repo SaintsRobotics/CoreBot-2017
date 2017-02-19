@@ -18,7 +18,7 @@ public abstract class Task extends Generator<BooleanSupplier> {
     	try{
     		runTask();
     	}catch(Throwable T){
-    		DriverStation.reportError(T.toString(), true);
+    		DriverStation.reportError("TASK CRASHED: " + T.toString(), true);
     		wait.forFrame();
     	}
     }
