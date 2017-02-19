@@ -121,7 +121,7 @@ public abstract class Motors {
         }
         
         private void init() {
-            speedController = new Victor(pin);
+            speedController = new TalonSRX(pin);
             speedController.setInverted(inverted);
         }
         
