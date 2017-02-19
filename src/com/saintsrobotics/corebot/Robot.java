@@ -23,6 +23,7 @@ import com.saintsrobotics.corebot.tasks.test.TestShifterTask;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -91,13 +92,13 @@ public class Robot extends IterativeRobot {
         GEAR_DROPPER_IN = prefs.getInt("GEAR_DROPPER_IN", 0);
         teleopRunner = new TaskRunner(
                 new ArcadeDriveTask(),
-                new LifterTask(),
-                new ShifterTask(),
-                new GearDropTask(),
+                //new LifterTask(),
+                //new ShifterTask(),
+                //new GearDropTask(),
                 new RunEachFrameTask() {
                     @Override
                     protected void runEachFrame() {
-                        SmartDashboard.putNumber("Potentiometer", Robot.sensors.potentiometer.get());
+                        SmartDashboard.putNumber("Ultrasound", Robot.sensors.ultrasound.getDistance());
                     }
                 },
                 new UpdateMotors()
@@ -106,9 +107,19 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
+    	
         autonomousRunner = new TaskRunner(
                 taskChooser.getSelected().get(),
-                new UpdateMotors()
+                new UpdateMotors(),
+                new RunEachFrameTask(){
+
+					@Override
+					protected void runEachFrame() {
+						DriverStation.reportError("BLUHHHHHH", false);
+						
+					}
+                	
+                }
         );
     }
 

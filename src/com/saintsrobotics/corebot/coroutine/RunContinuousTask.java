@@ -3,7 +3,7 @@ package com.saintsrobotics.corebot.coroutine;
 public abstract class RunContinuousTask extends Task {
     
     @Override
-    protected void run() {
+    protected void runTask() {
         while (true) {
             runContinuously();
         }
