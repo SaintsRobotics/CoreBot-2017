@@ -8,7 +8,7 @@ public class ToggleForwardDriveTask extends Task {
     @Override
     protected void runTask() {
         Robot.motors.allDrive.set(0.1);
-        wait.until(() -> Robot.oi.drive.buttons.A());
+        wait.until(() -> Robot.oi.drive.A());
         Robot.motors.allDrive.set(0);
     }
 }

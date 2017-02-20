@@ -6,15 +6,12 @@ import com.saintsrobotics.corebot.coroutine.TaskRunner;
 import com.saintsrobotics.corebot.input.OI;
 import com.saintsrobotics.corebot.input.PracticeSensors;
 import com.saintsrobotics.corebot.input.Sensors;
-import com.saintsrobotics.corebot.output.Motors;
-import com.saintsrobotics.corebot.output.PracticeBotMotors;
-import com.saintsrobotics.corebot.output.Servos;
+import com.saintsrobotics.corebot.output.*;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
 import com.saintsrobotics.corebot.tasks.autonomous.CenterTargetAutonRightTask;
 import com.saintsrobotics.corebot.tasks.autonomous.DriveStraightAutonTask;
 import com.saintsrobotics.corebot.tasks.autonomous.LeftTargetAutonTask;
 import com.saintsrobotics.corebot.tasks.autonomous.RightTargetAutonTask;
-import com.saintsrobotics.corebot.tasks.autonomous.TurnToFaceVisionTargetTask;
 import com.saintsrobotics.corebot.tasks.teleop.ArcadeDriveTask;
 import com.saintsrobotics.corebot.tasks.teleop.GearDropTask;
 import com.saintsrobotics.corebot.tasks.teleop.LifterTask;
@@ -22,10 +19,8 @@ import com.saintsrobotics.corebot.tasks.teleop.ShifterTask;
 import com.saintsrobotics.corebot.tasks.test.TestGearDropTask;
 import com.saintsrobotics.corebot.tasks.test.TestMotorsTask;
 import com.saintsrobotics.corebot.tasks.test.TestShifterTask;
-
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -36,24 +31,15 @@ import java.util.function.Supplier;
 
 public class Robot extends IterativeRobot {
 
-    public static double MOTOR_RAMPING = 0.05;
-
-    public static double GEAR_DROPPER_OUT = 80;
-    public static double GEAR_DROPPER_IN = 125;
-
-    public static double RIGHT_SHIFTER_OUT = 78;
-    public static double RIGHT_SHIFTER_IN = 116;
-
-    public static double LEFT_SHIFTER_OUT = 76;
-    public static double LEFT_SHIFTER_IN = 56;
+    public static double MOTOR_RAMPING = 0.10;
 
     private SendableChooser<Supplier<Task>> taskChooser = new SendableChooser<>();
     public static NetworkTable visionTable;
     public static Preferences prefs;
 
     public static Sensors sensors = new PracticeSensors();
-    public static Motors motors = new PracticeBotMotors();
-    public static Servos servos = new Servos(9, 8);
+    public static Motors motors = new CompetitionBotMotors();
+    public static Servos servos = new CompetitionBotServos();
     public static OI oi = new OI();
 
     private UsbCamera camera;
@@ -67,18 +53,20 @@ public class Robot extends IterativeRobot {
     @Override
     public void robotInit() {
         prefs = Preferences.getInstance();
-        cameraWidth = prefs.getInt("width", 320);
-        cameraHeight = prefs.getInt("height", 240);
+        oi.init();
+        sensors.init();
+        motors.init();
+        servos.init();
+        
+        cameraWidth = prefs.getInt("camera_width", 320);
+        cameraHeight = prefs.getInt("camera_height", 240);
         new Thread(() -> {
             camera = CameraServer.getInstance().startAutomaticCapture();
             camera.setResolution(cameraWidth, cameraHeight);
             camera.setBrightness(prefs.getInt("camera_brightness", 0));
         }).start();
         visionTable = NetworkTable.getTable("/GRIP/myContoursReport");
-        sensors.init();
-        motors.init();
-        servos.init();
-        oi.init();
+        
         taskChooser.addObject("DriveStraightTask", DriveStraightAutonTask::new);
         taskChooser.addObject("TestMotorsTask", TestMotorsTask::new);
         taskChooser.addDefault("RightTargetAutonTask", RightTargetAutonTask::new);
@@ -92,8 +80,6 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopInit() {
-        GEAR_DROPPER_OUT = prefs.getInt("GEAR_DROPPER_OUT", 0);
-        GEAR_DROPPER_IN = prefs.getInt("GEAR_DROPPER_IN", 0);
         teleopRunner = new TaskRunner(
                 new ArcadeDriveTask(),
                 new LifterTask(),
@@ -103,6 +89,8 @@ public class Robot extends IterativeRobot {
                     @Override
                     protected void runEachFrame() {
                         SmartDashboard.putNumber("Ultrasound", Robot.sensors.ultrasound.getDistance());
+                        SmartDashboard.putNumber("Potentiometer", Robot.sensors.potentiometer.get());
+    
                     }
                 },
                 new UpdateMotors()
@@ -111,7 +99,6 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
-    	
         autonomousRunner = new TaskRunner(
                 taskChooser.getSelected().get(),
                 new UpdateMotors()

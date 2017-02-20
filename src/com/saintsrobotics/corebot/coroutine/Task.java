@@ -13,30 +13,34 @@ public abstract class Task extends Generator<BooleanSupplier> {
     
     BooleanSupplier waiter = () -> true;
     Iterator<BooleanSupplier> iterator;
+    
     @Override
-    protected void run(){
-    	try{
-    		runTask();
-    	}catch(Throwable T){
-    		DriverStation.reportError("TASK CRASHED: " + this.getClass().getName() + " \n" + T.toString(), true);
-    		wait.forFrame();
-    	}
+    protected void run() {
+        try {
+            runTask();
+        } catch (Throwable t) {
+            DriverStation.reportError("TASK CRASHED: " + this.getClass().getName() + " \n" + t.toString(), true);
+            wait.forFrame();
+        }
     }
+    
     protected abstract void runTask();
+    
     protected class Waiters {
+        
         public void forFrame() {
             yield(() -> true);
         }
-    
+        
         public void forSeconds(double secs) {
             long finalTimeMillis = (long) (secs * 1000) + System.currentTimeMillis();
             yield(() -> finalTimeMillis < System.currentTimeMillis());
         }
-    
+        
         public void until(BooleanSupplier predicate) {
             yield(predicate);
         }
-
+        
         public void untilWithTimeout(BooleanSupplier predicate, double secs) {
             long finalTimeMillis = (long) (secs * 1000) + System.currentTimeMillis();
             yield(() -> predicate.getAsBoolean() || finalTimeMillis < System.currentTimeMillis());

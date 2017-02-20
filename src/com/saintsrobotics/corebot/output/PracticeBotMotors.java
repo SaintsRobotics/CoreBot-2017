@@ -1,7 +1,10 @@
 package com.saintsrobotics.corebot.output;
 
 public class PracticeBotMotors extends Motors {
-
+    
+    @Override public int getGearDropOut() { return 72; }
+    @Override public int getGearDropIn() { return 115; }
+    
     public PracticeBotMotors() {
         /*
         int leftDrivePin1, int leftDrivePin2,
