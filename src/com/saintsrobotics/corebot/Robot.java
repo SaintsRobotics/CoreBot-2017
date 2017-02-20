@@ -14,7 +14,6 @@ import com.saintsrobotics.corebot.tasks.autonomous.CenterTargetAutonTask;
 import com.saintsrobotics.corebot.tasks.autonomous.DriveStraightAutonTask;
 import com.saintsrobotics.corebot.tasks.autonomous.LeftTargetAutonTask;
 import com.saintsrobotics.corebot.tasks.autonomous.RightTargetAutonTask;
-import com.saintsrobotics.corebot.tasks.autonomous.TurnToFaceVisionTargetTask;
 import com.saintsrobotics.corebot.tasks.teleop.ArcadeDriveTask;
 import com.saintsrobotics.corebot.tasks.teleop.GearDropTask;
 import com.saintsrobotics.corebot.tasks.teleop.LifterTask;
@@ -22,10 +21,8 @@ import com.saintsrobotics.corebot.tasks.teleop.ShifterTask;
 import com.saintsrobotics.corebot.tasks.test.TestGearDropTask;
 import com.saintsrobotics.corebot.tasks.test.TestMotorsTask;
 import com.saintsrobotics.corebot.tasks.test.TestShifterTask;
-
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -103,6 +100,8 @@ public class Robot extends IterativeRobot {
                     @Override
                     protected void runEachFrame() {
                         SmartDashboard.putNumber("Ultrasound", Robot.sensors.ultrasound.getDistance());
+                        SmartDashboard.putNumber("Potentiometer", Robot.sensors.potentiometer.get());
+    
                     }
                 },
                 new UpdateMotors()
@@ -111,7 +110,6 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
-    	
         autonomousRunner = new TaskRunner(
                 taskChooser.getSelected().get(),
                 new UpdateMotors()
