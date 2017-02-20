@@ -8,10 +8,13 @@ import com.saintsrobotics.corebot.util.PID;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public abstract class TurnToFaceVisionTargetTask extends Task {
+public class MoveForwardWhileSeekingTask extends Task {
     
-    protected void seek(){
-    	while(Robot.sensors.ultrasound.getDistance() > Robot.prefs.getDouble("vision_stop_distance",10)){
+    
+    
+    @Override
+    protected void runTask() {
+        while(Robot.sensors.ultrasound.getDistance() > Robot.prefs.getDouble("vision_stop_distance",10)){
         	double motorPower = 0;
         	SmartDashboard.putNumber("Ultrasound", Robot.sensors.ultrasound.getDistance());
         	double[] centerXArr = Robot.visionTable.getNumberArray("centerX", new double[0]);
@@ -93,10 +96,10 @@ public abstract class TurnToFaceVisionTargetTask extends Task {
         Robot.motors.leftDrive.set(0);
         Robot.motors.rightDrive.set(0);
         //Testing bs below
-        wait.forSeconds(Robot.prefs.getDouble("vision_idle_time",0));
+        wait.forSeconds(0.5);
         Robot.motors.rightDrive.set(-Robot.prefs.getDouble("vision_coast_speed",0));
         Robot.motors.leftDrive.set(-Robot.prefs.getDouble("vision_coast_speed",0));
-        wait.forSeconds(Robot.prefs.getDouble("vision_coast_time", 0));
+        wait.forSeconds(0.5);
         Robot.motors.leftDrive.set(0);
         Robot.motors.rightDrive.set(0);
     }
