@@ -3,10 +3,13 @@ package com.saintsrobotics.corebot;
 import com.saintsrobotics.corebot.coroutine.RunEachFrameTask;
 import com.saintsrobotics.corebot.coroutine.Task;
 import com.saintsrobotics.corebot.coroutine.TaskRunner;
+import com.saintsrobotics.corebot.input.CompetitionSensors;
 import com.saintsrobotics.corebot.input.OI;
-import com.saintsrobotics.corebot.input.PracticeSensors;
 import com.saintsrobotics.corebot.input.Sensors;
-import com.saintsrobotics.corebot.output.*;
+import com.saintsrobotics.corebot.output.CompetitionBotMotors;
+import com.saintsrobotics.corebot.output.CompetitionBotServos;
+import com.saintsrobotics.corebot.output.Motors;
+import com.saintsrobotics.corebot.output.Servos;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
 import com.saintsrobotics.corebot.tasks.autonomous.CenterTargetAutonTask;
 import com.saintsrobotics.corebot.tasks.autonomous.DriveStraightAutonTask;
@@ -37,7 +40,7 @@ public class Robot extends IterativeRobot {
     public static NetworkTable visionTable;
     public static Preferences prefs;
 
-    public static Sensors sensors = new PracticeSensors();
+    public static Sensors sensors = new CompetitionSensors();
     public static Motors motors = new CompetitionBotMotors();
     public static Servos servos = new CompetitionBotServos();
     public static OI oi = new OI();

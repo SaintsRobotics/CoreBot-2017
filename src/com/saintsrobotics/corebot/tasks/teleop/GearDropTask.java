@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GearDropTask extends RunContinuousTask {
     
-    private PID armPid = new PID(Robot.prefs.getDouble("gear_drop_p", 0), 0, 0);
+    private PID armPid = new PID(Robot.prefs.getDouble("geardrop_p", 0), 0, 0);
 
     @Override
     protected void runContinuously() {

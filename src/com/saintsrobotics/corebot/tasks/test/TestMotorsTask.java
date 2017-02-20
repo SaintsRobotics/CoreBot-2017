@@ -29,13 +29,9 @@ public class TestMotorsTask extends RunContinuousTask {
         wait.forSeconds(time);
         Robot.motors.lift2.set(0);
     
-        Robot.motors.gearDrop1.set(speed);
+        Robot.motors.gearDrop.set(speed);
         wait.forSeconds(time);
-        Robot.motors.gearDrop1.set(0);
-    
-        Robot.motors.gearDrop2.set(speed);
-        wait.forSeconds(time);
-        Robot.motors.gearDrop2.set(0);
+        Robot.motors.gearDrop.set(0);
         
         wait.forSeconds(time*2);
     }
