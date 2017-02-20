@@ -10,7 +10,7 @@ import com.saintsrobotics.corebot.output.Motors;
 import com.saintsrobotics.corebot.output.PracticeBotMotors;
 import com.saintsrobotics.corebot.output.Servos;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
-import com.saintsrobotics.corebot.tasks.autonomous.CenterTargetAutonTask;
+import com.saintsrobotics.corebot.tasks.autonomous.CenterTargetAutonRightTask;
 import com.saintsrobotics.corebot.tasks.autonomous.DriveStraightAutonTask;
 import com.saintsrobotics.corebot.tasks.autonomous.LeftTargetAutonTask;
 import com.saintsrobotics.corebot.tasks.autonomous.RightTargetAutonTask;
@@ -82,7 +82,7 @@ public class Robot extends IterativeRobot {
         taskChooser.addObject("DriveStraightTask", DriveStraightAutonTask::new);
         taskChooser.addObject("TestMotorsTask", TestMotorsTask::new);
         taskChooser.addDefault("RightTargetAutonTask", RightTargetAutonTask::new);
-        taskChooser.addObject("CenterTargetAutonTask", CenterTargetAutonTask::new);
+        taskChooser.addObject("CenterTargetAutonTask", CenterTargetAutonRightTask::new);
         taskChooser.addObject("LeftTargetAutonTask", LeftTargetAutonTask::new);
         taskChooser.addObject("TestShifterTask", TestShifterTask::new);
         taskChooser.addObject("TestGearDropTask", TestGearDropTask::new);
