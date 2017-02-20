@@ -10,7 +10,10 @@ import com.saintsrobotics.corebot.output.Motors;
 import com.saintsrobotics.corebot.output.PracticeBotMotors;
 import com.saintsrobotics.corebot.output.Servos;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
+import com.saintsrobotics.corebot.tasks.autonomous.CenterTargetAutonTask;
 import com.saintsrobotics.corebot.tasks.autonomous.DriveStraightAutonTask;
+import com.saintsrobotics.corebot.tasks.autonomous.LeftTargetAutonTask;
+import com.saintsrobotics.corebot.tasks.autonomous.RightTargetAutonTask;
 import com.saintsrobotics.corebot.tasks.autonomous.TurnToFaceVisionTargetTask;
 import com.saintsrobotics.corebot.tasks.teleop.ArcadeDriveTask;
 import com.saintsrobotics.corebot.tasks.teleop.GearDropTask;
@@ -19,8 +22,10 @@ import com.saintsrobotics.corebot.tasks.teleop.ShifterTask;
 import com.saintsrobotics.corebot.tasks.test.TestGearDropTask;
 import com.saintsrobotics.corebot.tasks.test.TestMotorsTask;
 import com.saintsrobotics.corebot.tasks.test.TestShifterTask;
+
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -74,9 +79,11 @@ public class Robot extends IterativeRobot {
         motors.init();
         servos.init();
         oi.init();
-        taskChooser.addDefault("DriveStraightTask", DriveStraightAutonTask::new);
+        taskChooser.addObject("DriveStraightTask", DriveStraightAutonTask::new);
         taskChooser.addObject("TestMotorsTask", TestMotorsTask::new);
-        taskChooser.addObject("TurnToFaceVisionTargetTask", TurnToFaceVisionTargetTask::new);
+        taskChooser.addDefault("RightTargetAutonTask", RightTargetAutonTask::new);
+        taskChooser.addObject("CenterTargetAutonTask", CenterTargetAutonTask::new);
+        taskChooser.addObject("LeftTargetAutonTask", LeftTargetAutonTask::new);
         taskChooser.addObject("TestShifterTask", TestShifterTask::new);
         taskChooser.addObject("TestGearDropTask", TestGearDropTask::new);
         SmartDashboard.putData("Autonomous", taskChooser);
@@ -95,7 +102,7 @@ public class Robot extends IterativeRobot {
                 new RunEachFrameTask() {
                     @Override
                     protected void runEachFrame() {
-                        SmartDashboard.putNumber("Potentiometer", Robot.sensors.potentiometer.get());
+                        SmartDashboard.putNumber("Ultrasound", Robot.sensors.ultrasound.getDistance());
                     }
                 },
                 new UpdateMotors()
@@ -104,6 +111,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
+    	
         autonomousRunner = new TaskRunner(
                 taskChooser.getSelected().get(),
                 new UpdateMotors()

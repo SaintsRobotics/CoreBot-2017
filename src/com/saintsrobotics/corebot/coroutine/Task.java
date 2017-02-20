@@ -2,6 +2,8 @@ package com.saintsrobotics.corebot.coroutine;
 
 import com.zoominfo.util.yieldreturn.Generator;
 
+import edu.wpi.first.wpilibj.DriverStation;
+
 import java.util.Iterator;
 import java.util.function.BooleanSupplier;
 
@@ -11,7 +13,16 @@ public abstract class Task extends Generator<BooleanSupplier> {
     
     BooleanSupplier waiter = () -> true;
     Iterator<BooleanSupplier> iterator;
-    
+    @Override
+    protected void run(){
+    	try{
+    		runTask();
+    	}catch(Throwable T){
+    		DriverStation.reportError("TASK CRASHED: " + this.getClass().getName() + " \n" + T.toString(), true);
+    		wait.forFrame();
+    	}
+    }
+    protected abstract void runTask();
     protected class Waiters {
         public void forFrame() {
             yield(() -> true);

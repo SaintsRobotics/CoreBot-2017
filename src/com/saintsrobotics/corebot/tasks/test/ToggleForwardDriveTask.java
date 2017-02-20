@@ -6,7 +6,7 @@ import com.saintsrobotics.corebot.coroutine.Task;
 public class ToggleForwardDriveTask extends Task {
     
     @Override
-    protected void run() {
+    protected void runTask() {
         Robot.motors.allDrive.set(0.1);
         wait.until(() -> Robot.oi.drive.buttons.A());
         Robot.motors.allDrive.set(0);
