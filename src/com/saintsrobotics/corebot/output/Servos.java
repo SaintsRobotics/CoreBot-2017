@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.Servo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Servos {
+public abstract class Servos {
 
     private List<ServoWrapper> servos = new ArrayList<>();
 
@@ -33,11 +33,15 @@ public class Servos {
         }
 
         void init() {
-            servo = new Servo(pin);
+            if (pin != -1) {
+                servo = new Servo(pin);
+            }
         }
 
         public void setAngle(double degrees) {
-            servo.setAngle(degrees);
+            if (pin != -1) {
+                servo.setAngle(degrees);
+            }
         }
     }
 }

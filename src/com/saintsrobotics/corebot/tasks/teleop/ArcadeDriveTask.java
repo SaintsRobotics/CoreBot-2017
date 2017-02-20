@@ -11,22 +11,22 @@ public class ArcadeDriveTask extends RunEachFrameTask {
 
     @Override
     protected void runEachFrame() {
-        if (Robot.oi.drive.buttons.A()) {
+        if (Robot.oi.drive.A()) {
             turnMultiplier = Math.max(0, turnMultiplier - 0.015625);
-        } else if (Robot.oi.drive.buttons.B()) {
+        } else if (Robot.oi.drive.B()) {
             turnMultiplier = Math.min(1, turnMultiplier + 0.015625);
         }
         SmartDashboard.putNumber("Turn Multiplier", turnMultiplier);
 
-        if (Robot.oi.drive.buttons.X()) {
+        if (Robot.oi.drive.X()) {
             forwardMultiplier = Math.max(0, forwardMultiplier - 0.015625);
-        } else if (Robot.oi.drive.buttons.Y()) {
+        } else if (Robot.oi.drive.Y()) {
             forwardMultiplier = Math.min(1, forwardMultiplier + 0.015625);
         }
         SmartDashboard.putNumber("Forward Multiplier", forwardMultiplier);
 
-        double forward = -Robot.oi.drive.axes.leftStickY() * forwardMultiplier;
-        double turn = Robot.oi.drive.axes.rightStickX() * turnMultiplier;
+        double forward = -Robot.oi.drive.leftStickY() * forwardMultiplier;
+        double turn = Robot.oi.drive.rightStickX() * turnMultiplier;
         
         Robot.motors.leftDrive.set(forward + turn);
         Robot.motors.rightDrive.set(forward - turn);

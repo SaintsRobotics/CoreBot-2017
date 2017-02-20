@@ -6,9 +6,7 @@ import com.saintsrobotics.corebot.coroutine.TaskRunner;
 import com.saintsrobotics.corebot.input.OI;
 import com.saintsrobotics.corebot.input.PracticeSensors;
 import com.saintsrobotics.corebot.input.Sensors;
-import com.saintsrobotics.corebot.output.Motors;
-import com.saintsrobotics.corebot.output.PracticeBotMotors;
-import com.saintsrobotics.corebot.output.Servos;
+import com.saintsrobotics.corebot.output.*;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
 import com.saintsrobotics.corebot.tasks.autonomous.CenterTargetAutonTask;
 import com.saintsrobotics.corebot.tasks.autonomous.DriveStraightAutonTask;
@@ -49,8 +47,8 @@ public class Robot extends IterativeRobot {
     public static Preferences prefs;
 
     public static Sensors sensors = new PracticeSensors();
-    public static Motors motors = new PracticeBotMotors();
-    public static Servos servos = new Servos(9, 8);
+    public static Motors motors = new CompetitionBotMotors();
+    public static Servos servos = new NoopServos();
     public static OI oi = new OI();
 
     private UsbCamera camera;
@@ -64,6 +62,11 @@ public class Robot extends IterativeRobot {
     @Override
     public void robotInit() {
         prefs = Preferences.getInstance();
+        oi.init();
+        sensors.init();
+        motors.init();
+        servos.init();
+        
         cameraWidth = prefs.getInt("width", 320);
         cameraHeight = prefs.getInt("height", 240);
         new Thread(() -> {
@@ -72,10 +75,7 @@ public class Robot extends IterativeRobot {
             camera.setBrightness(prefs.getInt("camera_brightness", 0));
         }).start();
         visionTable = NetworkTable.getTable("/GRIP/myContoursReport");
-        sensors.init();
-        motors.init();
-        servos.init();
-        oi.init();
+        
         taskChooser.addObject("DriveStraightTask", DriveStraightAutonTask::new);
         taskChooser.addObject("TestMotorsTask", TestMotorsTask::new);
         taskChooser.addDefault("RightTargetAutonTask", RightTargetAutonTask::new);

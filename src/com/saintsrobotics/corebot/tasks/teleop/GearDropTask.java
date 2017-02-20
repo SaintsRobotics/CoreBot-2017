@@ -16,7 +16,7 @@ public class GearDropTask extends RunContinuousTask {
         
     @Override
     protected void runContinuously() {
-        while (!Robot.oi.drive.buttons.RB()) {
+        while (!Robot.oi.drive.RB()) {
             double value = -armPid.compute(Robot.sensors.potentiometer.get(), gearDropIn);
             SmartDashboard.putNumber("geardrop_in_motor", value);
             Robot.motors.gearDrop.set(Math.signum(value)*Math.min(Math.abs(value), 0.2));
@@ -25,7 +25,7 @@ public class GearDropTask extends RunContinuousTask {
     
         if (gearDropOut != -1 && gearDropIn != -1) {
             
-            while (Robot.oi.drive.buttons.RB()) {
+            while (Robot.oi.drive.RB()) {
                 double value = -armPid.compute(Robot.sensors.potentiometer.get(), gearDropOut);
                 SmartDashboard.putNumber("geardrop_out_motor", value);
                 Robot.motors.gearDrop.set(Math.signum(value) * Math.min(Math.abs(value), 1.0));
