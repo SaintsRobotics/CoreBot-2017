@@ -6,6 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Servos {
+    
+    public abstract int getRightShifterOut();
+    public abstract int getRightShifterIn();
+    
+    public abstract int getLeftShifterOut();
+    public abstract int getLeftShifterIn();
 
     private List<ServoWrapper> servos = new ArrayList<>();
 

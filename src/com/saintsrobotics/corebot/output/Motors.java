@@ -1,15 +1,16 @@
 package com.saintsrobotics.corebot.output;
 
 import com.saintsrobotics.corebot.Robot;
-
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.TalonSRX;
-import edu.wpi.first.wpilibj.Victor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Motors {
+    
+    public abstract int getGearDropOut();
+    public abstract int getGearDropIn();
     
     private List<Motor> motorList = new ArrayList<>();
     
@@ -23,14 +24,13 @@ public abstract class Motors {
     public final MotorGroup lift1;
     public final MotorGroup lift2;
     public final MotorGroup lift;
-    public final MotorGroup gearDrop1;
-    public final MotorGroup gearDrop2;
     public final MotorGroup gearDrop;
+    public final MotorGroup ledTalon;
 
     protected Motors(int leftDrivePin1, int leftDrivePin2,
                      int rightDrivePin1, int rightDrivePin2,
                      int liftPin1, int liftPin2,
-                     int gearDropPin1, int gearDropPin2,
+                     int gearDropPin, int ledTalonPin,
                      boolean leftDriveInverted,
                      boolean rightDriveInverted,
                      boolean lifterInverted,
@@ -41,8 +41,8 @@ public abstract class Motors {
         Motor motorRightDrive2 = new Motor(rightDrivePin2, rightDriveInverted);
         Motor motorLift1 = new Motor(liftPin1, lifterInverted);
         Motor motorLift2 = new Motor(liftPin2, lifterInverted);
-        Motor motorGearDrop1 = new Motor(gearDropPin1, gearDropInverted);
-        Motor motorGearDrop2 = new Motor(gearDropPin2, gearDropInverted);
+        Motor motorGearDrop = new Motor(gearDropPin, gearDropInverted);
+        Motor motorLED = new Motor(ledTalonPin, false);
 
         motorList.add(motorLeftDrive1);
         motorList.add(motorLeftDrive2);
@@ -50,8 +50,8 @@ public abstract class Motors {
         motorList.add(motorRightDrive2);
         motorList.add(motorLift1);
         motorList.add(motorLift2);
-        motorList.add(motorGearDrop1);
-        motorList.add(motorGearDrop2);
+        motorList.add(motorGearDrop);
+        motorList.add(motorLED);
 
         leftDrive1 = new MotorGroup(motorLeftDrive1);
         leftDrive2 = new MotorGroup(motorLeftDrive2);
@@ -59,16 +59,14 @@ public abstract class Motors {
         rightDrive2 = new MotorGroup(motorRightDrive2);
         lift1 = new MotorGroup(motorLift1);
         lift2 = new MotorGroup(motorLift2);
-        gearDrop1 = new MotorGroup(motorGearDrop1);
-        gearDrop2 = new MotorGroup(motorGearDrop2);
+        gearDrop = new MotorGroup(motorGearDrop);
+        ledTalon = new MotorGroup(motorLED);
 
         leftDrive = new MotorGroup(motorLeftDrive1, motorLeftDrive2);
         rightDrive = new MotorGroup(motorRightDrive1, motorRightDrive2);
         allDrive = new MotorGroup(leftDrive, rightDrive);
 
         lift = new MotorGroup(motorLift1, motorLift2);
-        gearDrop = new MotorGroup(gearDrop1, gearDrop2);
-        
     }
     
     public void init() {
@@ -127,6 +125,14 @@ public abstract class Motors {
         
         private double setpoint = 0;
         private double current = 0;
+        
+        void turnOnLED() {
+            speedController.set(1);
+        }
+        
+        void turnOffLED() {
+            speedController.set(0);
+        }
         
         void set(double speed) {
             setpoint = speed;

@@ -33,22 +33,13 @@ public class Robot extends IterativeRobot {
 
     public static double MOTOR_RAMPING = 0.10;
 
-    public static double GEAR_DROPPER_OUT = 80;
-    public static double GEAR_DROPPER_IN = 125;
-
-    public static double RIGHT_SHIFTER_OUT = 79;
-    public static double RIGHT_SHIFTER_IN = 116;
-
-    public static double LEFT_SHIFTER_OUT = 76;
-    public static double LEFT_SHIFTER_IN = 56;
-
     private SendableChooser<Supplier<Task>> taskChooser = new SendableChooser<>();
     public static NetworkTable visionTable;
     public static Preferences prefs;
 
     public static Sensors sensors = new PracticeSensors();
     public static Motors motors = new CompetitionBotMotors();
-    public static Servos servos = new NoopServos();
+    public static Servos servos = new CompetitionBotServos();
     public static OI oi = new OI();
 
     private UsbCamera camera;
@@ -67,8 +58,8 @@ public class Robot extends IterativeRobot {
         motors.init();
         servos.init();
         
-        cameraWidth = prefs.getInt("width", 320);
-        cameraHeight = prefs.getInt("height", 240);
+        cameraWidth = prefs.getInt("camera_width", 320);
+        cameraHeight = prefs.getInt("camera_height", 240);
         new Thread(() -> {
             camera = CameraServer.getInstance().startAutomaticCapture();
             camera.setResolution(cameraWidth, cameraHeight);
@@ -89,8 +80,6 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopInit() {
-        GEAR_DROPPER_OUT = prefs.getInt("GEAR_DROPPER_OUT", 0);
-        GEAR_DROPPER_IN = prefs.getInt("GEAR_DROPPER_IN", 0);
         teleopRunner = new TaskRunner(
                 new ArcadeDriveTask(),
                 new LifterTask(),

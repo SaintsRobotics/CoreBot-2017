@@ -7,15 +7,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GearDropTask extends RunContinuousTask {
     
-    private PID armPid = new PID(Robot.prefs.getDouble("P value", 0.1),
-        Robot.prefs.getDouble("I value", 0),
-        Robot.prefs.getDouble("D value", 0));
+    private PID armPid = new PID(Robot.prefs.getDouble("gear_drop_p", 0), 0, 0);
 
-    private double gearDropOut = Robot.prefs.getDouble("geardrop_out", -1);
-    private double gearDropIn = Robot.prefs.getDouble("geardrop_in", -1);
-        
     @Override
     protected void runContinuously() {
+        double gearDropIn = Robot.motors.getGearDropIn();
+        double gearDropOut = Robot.motors.getGearDropOut();
+        
         while (!Robot.oi.drive.RB()) {
             double value = -armPid.compute(Robot.sensors.potentiometer.get(), gearDropIn);
             SmartDashboard.putNumber("geardrop_in_motor", value);
