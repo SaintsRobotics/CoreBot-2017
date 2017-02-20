@@ -25,16 +25,16 @@ public class GearDropTask extends RunContinuousTask {
     
         if (gearDropOut != -1 && gearDropIn != -1) {
             
-            long startTime = System.currentTimeMillis();
-            
-            while (System.currentTimeMillis() < startTime + 2000) {
+            while (Robot.oi.drive.buttons.RB()) {
                 double value = -armPid.compute(Robot.sensors.potentiometer.get(), gearDropOut);
                 SmartDashboard.putNumber("geardrop_out_motor", value);
                 Robot.motors.gearDrop.set(Math.signum(value) * Math.min(Math.abs(value), 1.0));
                 wait.forFrame();
             }
+            
+            long startTime = System.currentTimeMillis();
     
-            while (System.currentTimeMillis() < startTime + 4000) {
+            while (System.currentTimeMillis() < startTime + 1000) {
                 double value = -armPid.compute(Robot.sensors.potentiometer.get(), gearDropIn);
                 SmartDashboard.putNumber("geardrop_in_motor", value);
                 Robot.motors.gearDrop.set(Math.signum(value) * Math.min(Math.abs(value), 1.0));

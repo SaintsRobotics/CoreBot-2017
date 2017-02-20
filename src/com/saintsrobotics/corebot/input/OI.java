@@ -94,8 +94,8 @@ public class OI {
             public boolean RB() { return joystick.getRawButton(6); }
             public boolean SELECT() { return joystick.getRawButton(7); }
             public boolean START() { return joystick.getRawButton(8); }
-            public boolean L3() { return joystick.getRawButton(8); }
-            public boolean R3() { return joystick.getRawButton(9); }
+            public boolean L3() { return joystick.getRawButton(9); }
+            public boolean R3() { return joystick.getRawButton(10); }
             public boolean DPAD_UP() { return joystick.getPOV(0) == 0; }
             public boolean DPAD_RIGHT() { return joystick.getPOV(0) == 90; }
             public boolean DPAD_DOWN() { return joystick.getPOV(0) == 180; }

@@ -38,7 +38,7 @@ public class Robot extends IterativeRobot {
     public static double GEAR_DROPPER_OUT = 80;
     public static double GEAR_DROPPER_IN = 125;
 
-    public static double RIGHT_SHIFTER_OUT = 78;
+    public static double RIGHT_SHIFTER_OUT = 79;
     public static double RIGHT_SHIFTER_IN = 116;
 
     public static double LEFT_SHIFTER_OUT = 76;
