@@ -4,7 +4,7 @@ import com.saintsrobotics.corebot.Robot;
 
 public class RightTargetAutonTask extends TurnToFaceVisionTargetTask {
 	@Override
-    protected void runTask() {
+    protected void runVisionTask() {
     	Robot.motors.leftDrive.set(Robot.prefs.getDouble("dead_reckoning_forward_speed", 0));
     	Robot.motors.rightDrive.set(Robot.prefs.getDouble("dead_reckoning_forward_speed", 0));
     	wait.forSeconds(Robot.prefs.getDouble("dead_reckoning_forward_time", 0));

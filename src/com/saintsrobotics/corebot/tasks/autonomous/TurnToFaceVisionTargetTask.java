@@ -5,7 +5,7 @@ import com.saintsrobotics.corebot.coroutine.Task;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class TurnToFaceVisionTargetTask extends Task {
+public class TurnToFaceVisionTargetTask extends Task{
     
     protected void seek(){
     	while(Robot.sensors.ultrasound.getDistance() > Robot.prefs.getDouble("vision_stop_distance",10)){
@@ -97,9 +97,10 @@ public class TurnToFaceVisionTargetTask extends Task {
         Robot.motors.leftDrive.set(0);
         Robot.motors.rightDrive.set(0);
     }
-
-	@Override
-	protected void runTask() {
+    @Override
+    protected void runTask(){
+    }
+	protected void runVisionTask() {
 		seek();
 	}
 }
