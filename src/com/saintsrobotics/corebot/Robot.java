@@ -20,6 +20,7 @@ import com.saintsrobotics.corebot.tasks.teleop.GearDropTask;
 import com.saintsrobotics.corebot.tasks.teleop.LifterTask;
 import com.saintsrobotics.corebot.tasks.teleop.ShifterTask;
 import com.saintsrobotics.corebot.tasks.test.TestGearDropTask;
+import com.saintsrobotics.corebot.tasks.test.TestLEDTask;
 import com.saintsrobotics.corebot.tasks.test.TestMotorsTask;
 import com.saintsrobotics.corebot.tasks.test.TestShifterTask;
 import edu.wpi.cscore.UsbCamera;
@@ -86,6 +87,7 @@ public class Robot extends IterativeRobot {
         teleopRunner = new TaskRunner(
                 new ArcadeDriveTask(),
                 new LifterTask(),
+                new TestLEDTask(),
                 new ShifterTask(),
                 new GearDropTask(),
                 new RunEachFrameTask() {

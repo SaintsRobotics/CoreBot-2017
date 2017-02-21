@@ -1,6 +1,7 @@
 package com.saintsrobotics.corebot.output;
 
 import com.saintsrobotics.corebot.Robot;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.TalonSRX;
 
@@ -25,12 +26,12 @@ public abstract class Motors {
     public final MotorGroup lift2;
     public final MotorGroup lift;
     public final MotorGroup gearDrop;
-    public final MotorGroup ledTalon;
+    public final MotorGroup ledController;
 
     protected Motors(int leftDrivePin1, int leftDrivePin2,
                      int rightDrivePin1, int rightDrivePin2,
                      int liftPin1, int liftPin2,
-                     int gearDropPin, int ledTalonPin,
+                     int gearDropPin, int ledControllerPin,
                      boolean leftDriveInverted,
                      boolean rightDriveInverted,
                      boolean lifterInverted,
@@ -42,7 +43,7 @@ public abstract class Motors {
         Motor motorLift1 = new Motor(liftPin1, lifterInverted);
         Motor motorLift2 = new Motor(liftPin2, lifterInverted);
         Motor motorGearDrop = new Motor(gearDropPin, gearDropInverted);
-        Motor motorLED = new Motor(ledTalonPin, false);
+        Motor motorLEDController = new Motor(ledControllerPin, false);
 
         motorList.add(motorLeftDrive1);
         motorList.add(motorLeftDrive2);
@@ -51,7 +52,7 @@ public abstract class Motors {
         motorList.add(motorLift1);
         motorList.add(motorLift2);
         motorList.add(motorGearDrop);
-        motorList.add(motorLED);
+        motorList.add(motorLEDController);
 
         leftDrive1 = new MotorGroup(motorLeftDrive1);
         leftDrive2 = new MotorGroup(motorLeftDrive2);
@@ -60,7 +61,7 @@ public abstract class Motors {
         lift1 = new MotorGroup(motorLift1);
         lift2 = new MotorGroup(motorLift2);
         gearDrop = new MotorGroup(motorGearDrop);
-        ledTalon = new MotorGroup(motorLED);
+        ledController = new MotorGroup(motorLEDController);
 
         leftDrive = new MotorGroup(motorLeftDrive1, motorLeftDrive2);
         rightDrive = new MotorGroup(motorRightDrive1, motorRightDrive2);
@@ -106,6 +107,22 @@ public abstract class Motors {
                 motor.set(speed);
             }
         }
+        
+        public void turnOnLED() {
+            if (motors.length == 1) {
+                motors[0].turnOnLED();
+            } else {
+                DriverStation.reportError("Attempting to enable LED on motor group", true);
+            }
+        }
+    
+        public void turnOffLED() {
+            if (motors.length == 1) {
+                motors[0].turnOffLED();
+            } else {
+                DriverStation.reportError("Attempting to enable LED on motor group", true);
+            }
+        }
     }
     public static class Motor {
         
@@ -127,11 +144,13 @@ public abstract class Motors {
         private double current = 0;
         
         void turnOnLED() {
-            speedController.set(1);
+            setpoint = 1;
+            current = 1;
         }
         
         void turnOffLED() {
-            speedController.set(0);
+            setpoint = 0;
+            current = 0;
         }
         
         void set(double speed) {

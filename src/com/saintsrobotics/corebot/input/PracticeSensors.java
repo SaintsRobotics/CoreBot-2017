@@ -6,6 +6,6 @@ import com.saintsrobotics.corebot.input.sensors.Ultrasound;
 public class PracticeSensors extends Sensors {
     
     public PracticeSensors() {
-        super(new Ultrasound(1), new Potentiometer(3));
+        super(new Ultrasound(0), new Potentiometer(3));
     }
 }
