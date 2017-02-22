@@ -12,4 +12,16 @@ public class TestBoardMotors extends Motors {
                 false,
                 false);
     }
+
+	@Override
+	public int getGearDropOut() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getGearDropIn() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

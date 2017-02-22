@@ -2,11 +2,12 @@ package com.saintsrobotics.corebot.tasks.autonomous;
 
 import com.saintsrobotics.corebot.Robot;
 import com.saintsrobotics.corebot.coroutine.Task;
+import com.saintsrobotics.corebot.input.Flags;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class TurnToFaceVisionTargetTask extends Task{
-    
+public class TurnToFaceVisionTargetTask extends Task {
     protected void seek(){
     	while(Robot.sensors.ultrasound.getDistance() > Robot.prefs.getDouble("vision_stop_distance",10)){
         	double motorPower = 0;
@@ -57,6 +58,7 @@ public class TurnToFaceVisionTargetTask extends Task{
 	            SmartDashboard.putNumber("targetY",secondLowestTargetY);
 	            double liftPositionX = (lowestTargetX + secondLowestTargetX) / 2;
 	            double normalizedLiftPositionX = liftPositionX / Robot.cameraWidth;
+	            SmartDashboard.putNumber("Camera Width", Robot.cameraWidth);
 	            double relativeNormalizedLiftPositionX = 2 * (normalizedLiftPositionX - 0.5);
 	            
 	            SmartDashboard.putNumber("liftPositionX", liftPositionX);
@@ -90,15 +92,20 @@ public class TurnToFaceVisionTargetTask extends Task{
         Robot.motors.leftDrive.set(0);
         Robot.motors.rightDrive.set(0);
         //Testing bs below
+        Robot.flags.wantKick = true;
         wait.forSeconds(Robot.prefs.getDouble("vision_idle_time",0));
+        Robot.flags.wantKick = false;
         Robot.motors.rightDrive.set(-Robot.prefs.getDouble("vision_coast_speed",0));
         Robot.motors.leftDrive.set(-Robot.prefs.getDouble("vision_coast_speed",0));
         wait.forSeconds(Robot.prefs.getDouble("vision_coast_time", 0));
-        Robot.motors.leftDrive.set(0);
-        Robot.motors.rightDrive.set(0);
+        Robot.motors.leftDrive.set(0.01);
+        Robot.motors.rightDrive.set(0.01);
     }
     @Override
     protected void runTask(){
+    	Robot.motors.ledTalon.set(Robot.prefs.getDouble("vision_brightness",0.8));
+    	runVisionTask();
+    	Robot.motors.ledTalon.set(0);
     }
 	protected void runVisionTask() {
 		seek();

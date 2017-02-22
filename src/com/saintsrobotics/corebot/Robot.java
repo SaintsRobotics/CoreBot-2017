@@ -4,6 +4,7 @@ import com.saintsrobotics.corebot.coroutine.RunEachFrameTask;
 import com.saintsrobotics.corebot.coroutine.Task;
 import com.saintsrobotics.corebot.coroutine.TaskRunner;
 import com.saintsrobotics.corebot.input.CompetitionSensors;
+import com.saintsrobotics.corebot.input.Flags;
 import com.saintsrobotics.corebot.input.OI;
 import com.saintsrobotics.corebot.input.Sensors;
 import com.saintsrobotics.corebot.output.CompetitionBotMotors;
@@ -11,7 +12,11 @@ import com.saintsrobotics.corebot.output.CompetitionBotServos;
 import com.saintsrobotics.corebot.output.Motors;
 import com.saintsrobotics.corebot.output.Servos;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
-import com.saintsrobotics.corebot.tasks.autonomous.*;
+import com.saintsrobotics.corebot.tasks.autonomous.CenterTargetAutonRightTask;
+import com.saintsrobotics.corebot.tasks.autonomous.CenterTargetLeftAutonTask;
+import com.saintsrobotics.corebot.tasks.autonomous.LeftTargetAutonTask;
+import com.saintsrobotics.corebot.tasks.autonomous.RightTargetAutonTask;
+import com.saintsrobotics.corebot.tasks.autonomous.TurnToFaceVisionTargetTask;
 import com.saintsrobotics.corebot.tasks.teleop.ArcadeDriveTask;
 import com.saintsrobotics.corebot.tasks.teleop.GearDropTask;
 import com.saintsrobotics.corebot.tasks.teleop.LifterTask;
@@ -38,6 +43,7 @@ public class Robot extends IterativeRobot {
     public static NetworkTable visionTable;
     public static Preferences prefs;
 
+    public static Flags flags = new Flags();
     public static Sensors sensors = new CompetitionSensors();
     public static Motors motors = new CompetitionBotMotors();
     public static Servos servos = new CompetitionBotServos();
@@ -59,8 +65,8 @@ public class Robot extends IterativeRobot {
         motors.init();
         servos.init();
         
-        cameraWidth = prefs.getInt("camera_width", 320);
-        cameraHeight = prefs.getInt("camera_height", 240);
+        cameraWidth = (int)prefs.getDouble("camera_width", 320);
+        cameraHeight = (int)prefs.getDouble("camera_height", 240);
         new Thread(() -> {
             camera = CameraServer.getInstance().startAutomaticCapture();
             camera.setResolution(cameraWidth, cameraHeight);
@@ -82,6 +88,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopInit() {
+    	Robot.flags = new Flags();
         teleopRunner = new TaskRunner(
                 new ArcadeDriveTask(),
                 new LifterTask(),
@@ -102,14 +109,17 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
+    	Robot.flags = new Flags();
         autonomousRunner = new TaskRunner(
-                taskChooser.getSelected().get(),
+        		taskChooser.getSelected().get(),
+                new GearDropTask(),
                 new UpdateMotors()
         );
     }
 
     @Override
     public void testInit() {
+    	Robot.flags = new Flags();
         testRunner = new TaskRunner(
 //                new TestShifterTask(),
 //                new UpdateMotors()
