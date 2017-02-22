@@ -16,7 +16,7 @@ public class PracticeBotMotors extends Motors {
         boolean lifterInverted,
         boolean gearDropInverted
         */
-        super(2, 3, 4, 5, 0, 1, 6, 7,
+        super(2, 3, 4, 5, 0, 1, 6,7,
                 false,
                 true,
                 false,

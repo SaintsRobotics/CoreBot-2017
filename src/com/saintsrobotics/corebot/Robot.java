@@ -3,11 +3,14 @@ package com.saintsrobotics.corebot;
 import com.saintsrobotics.corebot.coroutine.RunEachFrameTask;
 import com.saintsrobotics.corebot.coroutine.Task;
 import com.saintsrobotics.corebot.coroutine.TaskRunner;
+import com.saintsrobotics.corebot.input.CompetitionSensors;
+import com.saintsrobotics.corebot.input.Flags;
 import com.saintsrobotics.corebot.input.OI;
 import com.saintsrobotics.corebot.input.PracticeSensors;
 import com.saintsrobotics.corebot.input.Sensors;
 import com.saintsrobotics.corebot.output.*;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
+import com.saintsrobotics.corebot.tasks.autonomous.AutonGearDropTask;
 import com.saintsrobotics.corebot.tasks.autonomous.CenterTargetAutonRightTask;
 import com.saintsrobotics.corebot.tasks.autonomous.CenterTargetLeftAutonTask;
 import com.saintsrobotics.corebot.tasks.autonomous.DriveStraightAutonTask;
@@ -39,9 +42,11 @@ public class Robot extends IterativeRobot {
     private SendableChooser<Supplier<Task>> taskChooser = new SendableChooser<>();
     public static NetworkTable visionTable;
     public static Preferences prefs;
-
+    
+    public static Flags flags = new Flags();
+    
     public static Sensors sensors = new PracticeSensors();
-    public static Motors motors = new CompetitionBotMotors();
+    public static Motors motors = new PracticeBotMotors();
     public static Servos servos = new CompetitionBotServos();
     public static OI oi = new OI();
 
@@ -61,14 +66,15 @@ public class Robot extends IterativeRobot {
         motors.init();
         servos.init();
         
-        cameraWidth = prefs.getInt("camera_width", 320);
-        cameraHeight = prefs.getInt("camera_height", 240);
+        cameraWidth = (int)prefs.getDouble("camera_width", 320);
+        cameraHeight = (int)prefs.getDouble("camera_height", 240);
         new Thread(() -> {
             camera = CameraServer.getInstance().startAutomaticCapture();
             camera.setResolution(cameraWidth, cameraHeight);
             camera.setBrightness(prefs.getInt("camera_brightness", 0));
         }).start();
         visionTable = NetworkTable.getTable("/GRIP/myContoursReport");
+        
         
         taskChooser.addObject("DriveStraightTask", DriveStraightAutonTask::new);
         taskChooser.addObject("TestMotorsTask", TestMotorsTask::new);
@@ -85,6 +91,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopInit() {
+    	Robot.flags = new Flags();
         teleopRunner = new TaskRunner(
                 new ArcadeDriveTask(),
                 new LifterTask(),
@@ -104,14 +111,17 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
+    	Robot.flags = new Flags();
         autonomousRunner = new TaskRunner(
-                taskChooser.getSelected().get(),
+        		taskChooser.getSelected().get(),
+                new GearDropTask(),
                 new UpdateMotors()
         );
     }
 
     @Override
     public void testInit() {
+    	Robot.flags = new Flags();
         testRunner = new TaskRunner(
 //                new TestShifterTask(),
 //                new UpdateMotors()
