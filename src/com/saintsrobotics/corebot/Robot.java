@@ -6,14 +6,14 @@ import com.saintsrobotics.corebot.coroutine.TaskRunner;
 import com.saintsrobotics.corebot.input.CompetitionSensors;
 import com.saintsrobotics.corebot.input.Flags;
 import com.saintsrobotics.corebot.input.OI;
-import com.saintsrobotics.corebot.input.PracticeSensors;
 import com.saintsrobotics.corebot.input.Sensors;
-import com.saintsrobotics.corebot.output.*;
+import com.saintsrobotics.corebot.output.CompetitionBotMotors;
+import com.saintsrobotics.corebot.output.CompetitionBotServos;
+import com.saintsrobotics.corebot.output.Motors;
+import com.saintsrobotics.corebot.output.Servos;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
-import com.saintsrobotics.corebot.tasks.autonomous.AutonGearDropTask;
 import com.saintsrobotics.corebot.tasks.autonomous.CenterTargetAutonRightTask;
 import com.saintsrobotics.corebot.tasks.autonomous.CenterTargetLeftAutonTask;
-import com.saintsrobotics.corebot.tasks.autonomous.DriveStraightAutonTask;
 import com.saintsrobotics.corebot.tasks.autonomous.LeftTargetAutonTask;
 import com.saintsrobotics.corebot.tasks.autonomous.RightTargetAutonTask;
 import com.saintsrobotics.corebot.tasks.autonomous.TurnToFaceVisionTargetTask;
@@ -22,9 +22,9 @@ import com.saintsrobotics.corebot.tasks.teleop.GearDropTask;
 import com.saintsrobotics.corebot.tasks.teleop.LifterTask;
 import com.saintsrobotics.corebot.tasks.teleop.ShifterTask;
 import com.saintsrobotics.corebot.tasks.test.TestGearDropTask;
+import com.saintsrobotics.corebot.tasks.test.TestLEDTask;
 import com.saintsrobotics.corebot.tasks.test.TestMotorsTask;
 import com.saintsrobotics.corebot.tasks.test.TestShifterTask;
-
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -42,11 +42,10 @@ public class Robot extends IterativeRobot {
     private SendableChooser<Supplier<Task>> taskChooser = new SendableChooser<>();
     public static NetworkTable visionTable;
     public static Preferences prefs;
-    
+
     public static Flags flags = new Flags();
-    
-    public static Sensors sensors = new PracticeSensors();
-    public static Motors motors = new PracticeBotMotors();
+    public static Sensors sensors = new CompetitionSensors();
+    public static Motors motors = new CompetitionBotMotors();
     public static Servos servos = new CompetitionBotServos();
     public static OI oi = new OI();
 
@@ -75,10 +74,8 @@ public class Robot extends IterativeRobot {
         }).start();
         visionTable = NetworkTable.getTable("/GRIP/myContoursReport");
         
-        
-        taskChooser.addObject("DriveStraightTask", DriveStraightAutonTask::new);
-        taskChooser.addObject("TestMotorsTask", TestMotorsTask::new);
         taskChooser.addDefault("RightTargetAutonTask", RightTargetAutonTask::new);
+        taskChooser.addObject("TestMotorsTask", TestMotorsTask::new);
         taskChooser.addObject("CenterTargetAutonRightTask", CenterTargetAutonRightTask::new);
         taskChooser.addObject("CenterTargetLeftAutonTask", CenterTargetLeftAutonTask::new);
         taskChooser.addObject("TurnToFaceVisionTargetTask", TurnToFaceVisionTargetTask::new);
@@ -95,6 +92,7 @@ public class Robot extends IterativeRobot {
         teleopRunner = new TaskRunner(
                 new ArcadeDriveTask(),
                 new LifterTask(),
+                new TestLEDTask(),
                 new ShifterTask(),
                 new GearDropTask(),
                 new RunEachFrameTask() {

@@ -55,15 +55,19 @@ public class OI {
         public boolean DPAD_DOWN() { return joystick.getPOV(0) == 180; }
         public boolean DPAD_LEFT() { return joystick.getPOV(0) == 270; }
     
-        public double leftStickX() { return ramp(joystick.getRawAxis(0)); }
-        public double leftStickY() { return ramp(joystick.getRawAxis(1)); }
-        public double leftTrigger() { return ramp(joystick.getRawAxis(2)); }
-        public double rightTrigger() { return ramp(joystick.getRawAxis(3)); }
-        public double rightStickX() { return ramp(joystick.getRawAxis(4)); }
-        public double rightStickY() { return ramp(joystick.getRawAxis(5)); }
+        public double leftStickX() { return deadzone(joystick.getRawAxis(0)); }
+        public double leftStickY() { return deadzone(joystick.getRawAxis(1)); }
+        public double leftTrigger() { return deadzone(joystick.getRawAxis(2)); }
+        public double rightTrigger() { return deadzone(joystick.getRawAxis(3), 0.05); }
+        public double rightStickX() { return deadzone(joystick.getRawAxis(4), 0.05); }
+        public double rightStickY() { return deadzone(joystick.getRawAxis(5)); }
     
-        private double ramp(double rawAxis) {
-            if (Math.abs(rawAxis) < 0.15) return 0;
+        private double deadzone(double rawAxis) {
+            return deadzone(rawAxis, 0.10);
+        }
+    
+        private double deadzone(double rawAxis, double deadzone) {
+            if (Math.abs(rawAxis) < deadzone) return 0;
             else return rawAxis;
         }
     }
