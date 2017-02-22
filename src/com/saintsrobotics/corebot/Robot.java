@@ -6,7 +6,10 @@ import com.saintsrobotics.corebot.coroutine.TaskRunner;
 import com.saintsrobotics.corebot.input.CompetitionSensors;
 import com.saintsrobotics.corebot.input.OI;
 import com.saintsrobotics.corebot.input.Sensors;
-import com.saintsrobotics.corebot.output.*;
+import com.saintsrobotics.corebot.output.CompetitionBotMotors;
+import com.saintsrobotics.corebot.output.CompetitionBotServos;
+import com.saintsrobotics.corebot.output.Motors;
+import com.saintsrobotics.corebot.output.Servos;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
 import com.saintsrobotics.corebot.tasks.autonomous.*;
 import com.saintsrobotics.corebot.tasks.teleop.ArcadeDriveTask;
@@ -66,7 +69,6 @@ public class Robot extends IterativeRobot {
         visionTable = NetworkTable.getTable("/GRIP/myContoursReport");
         
         taskChooser.addDefault("RightTargetAutonTask", RightTargetAutonTask::new);
-        taskChooser.addObject("DriveStraightTask", DriveStraightAutonTask::new);
         taskChooser.addObject("TestMotorsTask", TestMotorsTask::new);
         taskChooser.addObject("CenterTargetAutonRightTask", CenterTargetAutonRightTask::new);
         taskChooser.addObject("CenterTargetLeftAutonTask", CenterTargetLeftAutonTask::new);
