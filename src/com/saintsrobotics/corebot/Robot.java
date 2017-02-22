@@ -84,11 +84,9 @@ public class Robot extends IterativeRobot {
         taskChooser.addObject("TestGearDropTask", TestGearDropTask::new);
         SmartDashboard.putData("Autonomous", taskChooser);
     }
-
-
+    
     @Override
     public void teleopInit() {
-    	Robot.flags = new Flags();
         teleopRunner = new TaskRunner(
                 new ArcadeDriveTask(),
                 new LifterTask(),
@@ -109,7 +107,6 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
-    	Robot.flags = new Flags();
         autonomousRunner = new TaskRunner(
         		taskChooser.getSelected().get(),
                 new GearDropTask(),
@@ -119,7 +116,6 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void testInit() {
-    	Robot.flags = new Flags();
         testRunner = new TaskRunner(
 //                new TestShifterTask(),
 //                new UpdateMotors()
@@ -143,6 +139,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void disabledInit() {
+        Robot.flags = new Flags();
         if (teleopRunner != null) {
             teleopRunner.disable();
         }
