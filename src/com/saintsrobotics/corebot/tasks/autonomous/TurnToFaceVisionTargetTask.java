@@ -2,8 +2,6 @@ package com.saintsrobotics.corebot.tasks.autonomous;
 
 import com.saintsrobotics.corebot.Robot;
 import com.saintsrobotics.corebot.coroutine.Task;
-import com.saintsrobotics.corebot.input.Flags;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -103,9 +101,9 @@ public class TurnToFaceVisionTargetTask extends Task {
     }
     @Override
     protected void runTask(){
-    	Robot.motors.ledTalon.set(Robot.prefs.getDouble("vision_brightness",0.8));
+    	Robot.motors.ledController.set(Robot.prefs.getDouble("vision_brightness",0.8));
     	runVisionTask();
-    	Robot.motors.ledTalon.set(0);
+    	Robot.motors.ledController.set(0);
     }
 	protected void runVisionTask() {
 		seek();
