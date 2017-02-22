@@ -3,7 +3,7 @@ package com.saintsrobotics.corebot.output;
 public class CompetitionBotMotors extends Motors {
     
     @Override public int getGearDropOut() { return 143; }
-    @Override public int getGearDropIn() { return 163; }
+    @Override public int getGearDropIn() { return 161; }
     
     public CompetitionBotMotors() {
         /*
