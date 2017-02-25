@@ -3,14 +3,8 @@ package com.saintsrobotics.corebot;
 import com.saintsrobotics.corebot.coroutine.RunEachFrameTask;
 import com.saintsrobotics.corebot.coroutine.Task;
 import com.saintsrobotics.corebot.coroutine.TaskRunner;
-import com.saintsrobotics.corebot.input.CompetitionSensors;
-import com.saintsrobotics.corebot.input.Flags;
-import com.saintsrobotics.corebot.input.OI;
-import com.saintsrobotics.corebot.input.Sensors;
-import com.saintsrobotics.corebot.output.CompetitionBotMotors;
-import com.saintsrobotics.corebot.output.CompetitionBotServos;
-import com.saintsrobotics.corebot.output.Motors;
-import com.saintsrobotics.corebot.output.Servos;
+import com.saintsrobotics.corebot.input.*;
+import com.saintsrobotics.corebot.output.*;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
 import com.saintsrobotics.corebot.tasks.autonomous.CenterTargetAutonRightTask;
 import com.saintsrobotics.corebot.tasks.autonomous.CenterTargetLeftAutonTask;
@@ -44,9 +38,9 @@ public class Robot extends IterativeRobot {
     public static Preferences prefs;
 
     public static Flags flags = new Flags();
-    public static Sensors sensors = new CompetitionSensors();
-    public static Motors motors = new CompetitionBotMotors();
-    public static Servos servos = new CompetitionBotServos();
+    public static Sensors sensors = new PracticeSensors();
+    public static Motors motors = new PracticeBotWithCompetitionGearDropMotors();
+    public static Servos servos = new PracticeBotServos();
     public static OI oi = new OI();
 
     private UsbCamera camera;
