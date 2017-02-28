@@ -1,8 +1,8 @@
 package com.saintsrobotics.corebot.output;
 
-public class PracticeBotServos extends Servos {
+public class PracticeServos extends Servos {
     
-    public PracticeBotServos() {
+    public PracticeServos() {
         // rightShifterPin, leftShifterPin
         super(9, 8);
     }

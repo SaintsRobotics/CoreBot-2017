@@ -1,11 +1,11 @@
 package com.saintsrobotics.corebot.output;
 
-public class CompetitionBotMotors extends Motors {
+public class PracticeWithCompetitionGearDropMotors extends Motors {
     
-    @Override public double getGearDropOut() { return 145; }
-    @Override public double getGearDropIn() { return 159; }
+    @Override public double getGearDropOut() { return 135.7; }
+    @Override public double getGearDropIn() { return 161.4; }
     
-    public CompetitionBotMotors() {
+    public PracticeWithCompetitionGearDropMotors() {
         /*
         int leftDrivePin1, int leftDrivePin2,
         int rightDrivePin1, int rightDrivePin2,

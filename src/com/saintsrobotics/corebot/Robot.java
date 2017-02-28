@@ -8,13 +8,17 @@ import com.saintsrobotics.corebot.input.OI;
 import com.saintsrobotics.corebot.input.PracticeSensors;
 import com.saintsrobotics.corebot.input.Sensors;
 import com.saintsrobotics.corebot.output.Motors;
-import com.saintsrobotics.corebot.output.PracticeBotServos;
-import com.saintsrobotics.corebot.output.PracticeBotWithCompetitionGearDropMotors;
+import com.saintsrobotics.corebot.output.PracticeServos;
+import com.saintsrobotics.corebot.output.PracticeWithCompetitionGearDropMotors;
 import com.saintsrobotics.corebot.output.Servos;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
 import com.saintsrobotics.corebot.tasks.autonomous.*;
+import com.saintsrobotics.corebot.tasks.teleop.ArcadeDriveTask;
 import com.saintsrobotics.corebot.tasks.teleop.GearDropTask;
+import com.saintsrobotics.corebot.tasks.teleop.LifterTask;
+import com.saintsrobotics.corebot.tasks.teleop.ShifterTask;
 import com.saintsrobotics.corebot.tasks.test.TestGearDropTask;
+import com.saintsrobotics.corebot.tasks.test.TestLEDTask;
 import com.saintsrobotics.corebot.tasks.test.TestMotorsTask;
 import com.saintsrobotics.corebot.tasks.test.TestShifterTask;
 import edu.wpi.cscore.UsbCamera;
@@ -37,8 +41,8 @@ public class Robot extends IterativeRobot {
 
     public static Flags flags = new Flags();
     public static Sensors sensors = new PracticeSensors();
-    public static Motors motors = new PracticeBotWithCompetitionGearDropMotors();
-    public static Servos servos = new PracticeBotServos();
+    public static Motors motors = new PracticeWithCompetitionGearDropMotors();
+    public static Servos servos = new PracticeServos();
     public static OI oi = new OI();
 
     private UsbCamera camera;
@@ -80,11 +84,11 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopInit() {
         teleopRunner = new TaskRunner(
-//                new TestGearDropTask(),
-//                new ArcadeDriveTask(),
-//                new LifterTask(),
-//                new TestLEDTask(),
-//                new ShifterTask(),
+                new TestGearDropTask(),
+                new ArcadeDriveTask(),
+                new LifterTask(),
+                new TestLEDTask(),
+                new ShifterTask(),
                 new GearDropTask(),
                 new RunEachFrameTask() {
                     @Override

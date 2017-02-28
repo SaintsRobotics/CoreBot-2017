@@ -1,11 +1,11 @@
 package com.saintsrobotics.corebot.output;
 
-public class PracticeBotMotors extends Motors {
+public class CompetitionMotors extends Motors {
     
-    @Override public double getGearDropOut() { return 72; }
-    @Override public double getGearDropIn() { return 115; }
+    @Override public double getGearDropOut() { return 135.7; }
+    @Override public double getGearDropIn() { return 161.4; }
     
-    public PracticeBotMotors() {
+    public CompetitionMotors() {
         /*
         int leftDrivePin1, int leftDrivePin2,
         int rightDrivePin1, int rightDrivePin2,
@@ -16,7 +16,7 @@ public class PracticeBotMotors extends Motors {
         boolean lifterInverted,
         boolean gearDropInverted
         */
-        super(2, 3, 4, 5, 0, 1, 6,7,
+        super(2, 3, 4, 5, 0, 1, 7, 6,
                 false,
                 true,
                 false,
