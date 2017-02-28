@@ -2,8 +2,8 @@ package com.saintsrobotics.corebot.output;
 
 public class PracticeBotMotors extends Motors {
     
-    @Override public int getGearDropOut() { return 72; }
-    @Override public int getGearDropIn() { return 115; }
+    @Override public double getGearDropOut() { return 72; }
+    @Override public double getGearDropIn() { return 115; }
     
     public PracticeBotMotors() {
         /*

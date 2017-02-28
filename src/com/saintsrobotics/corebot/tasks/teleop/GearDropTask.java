@@ -2,15 +2,15 @@ package com.saintsrobotics.corebot.tasks.teleop;
 
 import com.saintsrobotics.corebot.Robot;
 import com.saintsrobotics.corebot.coroutine.RunContinuousTask;
-import com.saintsrobotics.corebot.input.Flags;
 import com.saintsrobotics.corebot.util.PID;
-
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GearDropTask extends RunContinuousTask {
     
-    private PID armPid = new PID(Robot.prefs.getDouble("geardrop_p", 0), 0, 0);
+    private PID armPid = new PID(
+            Robot.prefs.getDouble("geardrop_p", 0),
+            Robot.prefs.getDouble("geardrop_i", 0),
+            Robot.prefs.getDouble("geardrop_d", 0));
 
     @Override
     protected void runContinuously() {
@@ -20,15 +20,13 @@ public class GearDropTask extends RunContinuousTask {
         while (!Robot.oi.drive.RB()||Robot.flags.wantKick) {
             double value = -armPid.compute(Robot.sensors.potentiometer.get(), gearDropIn);
             SmartDashboard.putNumber("geardrop_in_motor", value);
-            Robot.motors.gearDrop.set(Math.signum(value)*Math.min(Math.abs(value), 0.2));
+            Robot.motors.gearDrop.set(Math.signum(value)*Math.min(Math.abs(value), 0.5));
             wait.forFrame();
         }
     
         if (gearDropOut != -1 && gearDropIn != -1) {
             
             while (Robot.oi.drive.RB() || Robot.flags.wantKick) {
-            	DriverStation.reportError("Button Push", false);
-            	
                 double value = -armPid.compute(Robot.sensors.potentiometer.get(), gearDropOut);
                 SmartDashboard.putNumber("geardrop_out_motor", value);
                 Robot.motors.gearDrop.set(Math.signum(value) * Math.min(Math.abs(value), 1.0));

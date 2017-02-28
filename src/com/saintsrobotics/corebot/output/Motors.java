@@ -10,8 +10,8 @@ import java.util.List;
 
 public abstract class Motors {
     
-    public abstract int getGearDropOut();
-    public abstract int getGearDropIn();
+    public abstract double getGearDropOut();
+    public abstract double getGearDropIn();
     
     private List<Motor> motorList = new ArrayList<>();
     
