@@ -22,7 +22,23 @@ public class Ultrasound {
         }
     }
     
+    double[] lowPassQueue = new double[10];
+    
     public double getDistance() {
-        return analog.getAverageVoltage() * 53.72 - 5.62;
+        return lowPassQueue[0];
+//        double sum = 0;
+//        for (double val : lowPassQueue) {
+//            sum += val;
+//        }
+//        return sum / lowPassQueue.length;
+    }
+    
+    public void update() {
+        double val = (2.2-analog.getAverageVoltage()) * 40 / 2.2 - 3;// * 53.72 - 5.62;
+//        if (val > 220) val = lowPassQueue[0];
+        lowPassQueue[0] = val;
+        for (int i = 0; i < lowPassQueue.length-1; i++) {
+            lowPassQueue[i+1] = lowPassQueue[i];
+        }
     }
 }

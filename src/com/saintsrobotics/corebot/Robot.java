@@ -1,28 +1,27 @@
 package com.saintsrobotics.corebot;
 
-import com.saintsrobotics.corebot.coroutine.RunEachFrameTask;
 import com.saintsrobotics.corebot.coroutine.Task;
 import com.saintsrobotics.corebot.coroutine.TaskRunner;
+import com.saintsrobotics.corebot.input.CompetitionSensors;
 import com.saintsrobotics.corebot.input.Flags;
 import com.saintsrobotics.corebot.input.OI;
-import com.saintsrobotics.corebot.input.PracticeSensors;
 import com.saintsrobotics.corebot.input.Sensors;
+import com.saintsrobotics.corebot.output.CompetitionMotors;
+import com.saintsrobotics.corebot.output.CompetitionServos;
 import com.saintsrobotics.corebot.output.Motors;
-import com.saintsrobotics.corebot.output.PracticeServos;
-import com.saintsrobotics.corebot.output.PracticeWithCompetitionGearDropMotors;
 import com.saintsrobotics.corebot.output.Servos;
+import com.saintsrobotics.corebot.tasks.PostSensorsToSmartDashboardTask;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
-import com.saintsrobotics.corebot.tasks.autonomous.*;
 import com.saintsrobotics.corebot.tasks.teleop.ArcadeDriveTask;
 import com.saintsrobotics.corebot.tasks.teleop.GearDropTask;
 import com.saintsrobotics.corebot.tasks.teleop.LifterTask;
 import com.saintsrobotics.corebot.tasks.teleop.ShifterTask;
-import com.saintsrobotics.corebot.tasks.test.TestGearDropTask;
 import com.saintsrobotics.corebot.tasks.test.TestLEDTask;
-import com.saintsrobotics.corebot.tasks.test.TestMotorsTask;
-import com.saintsrobotics.corebot.tasks.test.TestShifterTask;
+import com.saintsrobotics.corebot.tasks.vision.CenterTargetBasicAutonTask;
+import com.saintsrobotics.corebot.tasks.vision.RightTargetAutonTask;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -40,9 +39,9 @@ public class Robot extends IterativeRobot {
     public static Preferences prefs;
 
     public static Flags flags = new Flags();
-    public static Sensors sensors = new PracticeSensors();
-    public static Motors motors = new PracticeWithCompetitionGearDropMotors();
-    public static Servos servos = new PracticeServos();
+    public static Sensors sensors = new CompetitionSensors();
+    public static Motors motors = new CompetitionMotors();
+    public static Servos servos = new CompetitionServos();
     public static OI oi = new OI();
 
     private UsbCamera camera;
@@ -52,6 +51,10 @@ public class Robot extends IterativeRobot {
     private TaskRunner teleopRunner;
     private TaskRunner autonomousRunner;
     private TaskRunner testRunner;
+    
+    public static void log(String message) {
+        DriverStation.reportWarning(message, false);
+    }
 
     @Override
     public void robotInit() {
@@ -70,35 +73,22 @@ public class Robot extends IterativeRobot {
         }).start();
         visionTable = NetworkTable.getTable("/GRIP/myContoursReport");
         
-        taskChooser.addDefault("RightTargetAutonTask", RightTargetAutonTask::new);
-        taskChooser.addObject("TestMotorsTask", TestMotorsTask::new);
-        taskChooser.addObject("CenterTargetAutonRightTask", CenterTargetAutonRightTask::new);
-        taskChooser.addObject("CenterTargetLeftAutonTask", CenterTargetLeftAutonTask::new);
-        taskChooser.addObject("TurnToFaceVisionTargetTask", TurnToFaceVisionTargetTask::new);
-        taskChooser.addObject("LeftTargetAutonTask", LeftTargetAutonTask::new);
-        taskChooser.addObject("TestShifterTask", TestShifterTask::new);
-        taskChooser.addObject("TestGearDropTask", TestGearDropTask::new);
+        taskChooser.addDefault("CenterTargetBasicAutonTask", CenterTargetBasicAutonTask::new);
+        taskChooser.addObject("RightTargetAutonTask", RightTargetAutonTask::new);
         SmartDashboard.putData("Autonomous", taskChooser);
     }
     
     @Override
     public void teleopInit() {
         teleopRunner = new TaskRunner(
-                new TestGearDropTask(),
+//                new TestGearDropTask(),
                 new ArcadeDriveTask(),
                 new LifterTask(),
                 new TestLEDTask(),
                 new ShifterTask(),
                 new GearDropTask(),
-                new RunEachFrameTask() {
-                    @Override
-                    protected void runEachFrame() {
-                        SmartDashboard.putNumber("Ultrasound", Robot.sensors.ultrasound.getDistance());
-                        SmartDashboard.putNumber("Potentiometer", Robot.sensors.potentiometer.get());
-    
-                    }
-                },
-                new UpdateMotors()
+                new UpdateMotors(),
+                new PostSensorsToSmartDashboardTask()
         );
     }
 
@@ -107,7 +97,8 @@ public class Robot extends IterativeRobot {
         autonomousRunner = new TaskRunner(
         		taskChooser.getSelected().get(),
                 new GearDropTask(),
-                new UpdateMotors()
+                new UpdateMotors(),
+                new PostSensorsToSmartDashboardTask()
         );
     }
 
