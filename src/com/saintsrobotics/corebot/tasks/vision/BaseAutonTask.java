@@ -7,7 +7,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public abstract class BaseAutonTask extends Task {
     
-    protected final double lineUpSpeed = Robot.prefs.getDouble("vision_line_up_speed", 0);
+    protected final double lineUpSpeedSides = Robot.prefs.getDouble("vision_line_up_speed", 0);
+    protected final double lineUpSpeedCenter = Robot.prefs.getDouble("vision_line_up_speed_straight", 0);
     
     protected final double visionStopDistance = Robot.prefs.getDouble("vision_stop_distance", 10);
     protected final double visionTolerance = Robot.prefs.getDouble("vision_tolerance", 0);
@@ -98,16 +99,16 @@ public abstract class BaseAutonTask extends Task {
         wait.forSeconds(time);
     }
     
-    protected void driveIntoLiftAndKickAndBackOff(boolean actuallyKick) {
-        lineUpWithLift();
+    protected void driveIntoLiftAndKickAndBackOff(double forwardSpeed, boolean actuallyKick) {
+        lineUpWithLift(forwardSpeed);
         dashForwardOntoLift();
         if (actuallyKick) {
             kickGear(visionKickTime);
+            backUp();
         } else {
             Robot.log("Pretending to kick gear for " + visionKickTime + "s");
             wait.forSeconds(visionKickTime);
         }
-        backUp();
         Robot.flags.wantKick = false;
     }
     
@@ -115,11 +116,12 @@ public abstract class BaseAutonTask extends Task {
      * Drives forward, using vision, until the robot is right in front of and facing the lift.
      */
     @SuppressWarnings("Duplicates")
-    protected void lineUpWithLift() {
-        Robot.log("Lining up with lift, wish me luck!");
+    protected void lineUpWithLift(final double baseForwardSpeed) {
+        long startTime = System.currentTimeMillis();
+        Robot.log("Lining up with lift, wish me luck! " + startTime);
+        
         while (Robot.sensors.ultrasound.getDistance() > visionStopDistance) {
-//            double forwardSpeed = getForwardSpeed();
-            double forwardSpeed = lineUpSpeed;
+            double forwardSpeed = baseForwardSpeed;
             double turnAmount;
             
             VisionTargets targets = getLowestVisionTargets(
@@ -128,6 +130,7 @@ public abstract class BaseAutonTask extends Task {
             
             if (targets == null) {
 //                DriverStation.reportError("Less than two vision targets found this frame", false);
+                wait.forFrame();
                 continue;
             }
             
@@ -142,6 +145,11 @@ public abstract class BaseAutonTask extends Task {
                 turnAmount = liftPosition * visionTurnPower;
             } else {
                 turnAmount = 0;
+            }
+            
+            if (System.currentTimeMillis() - startTime < 1000) {
+                forwardSpeed = 0;
+                turnAmount *= 0.75;
             }
             
             SmartDashboard.putNumber("Vision Turn Speed", turnAmount);

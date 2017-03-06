@@ -12,12 +12,10 @@ import com.saintsrobotics.corebot.output.Motors;
 import com.saintsrobotics.corebot.output.Servos;
 import com.saintsrobotics.corebot.tasks.PostSensorsToSmartDashboardTask;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
-import com.saintsrobotics.corebot.tasks.teleop.ArcadeDriveTask;
-import com.saintsrobotics.corebot.tasks.teleop.GearDropTask;
-import com.saintsrobotics.corebot.tasks.teleop.LifterTask;
-import com.saintsrobotics.corebot.tasks.teleop.ShifterTask;
+import com.saintsrobotics.corebot.tasks.teleop.*;
 import com.saintsrobotics.corebot.tasks.test.TestLEDTask;
 import com.saintsrobotics.corebot.tasks.vision.CenterTargetBasicAutonTask;
+import com.saintsrobotics.corebot.tasks.vision.LeftTargetAutonTask;
 import com.saintsrobotics.corebot.tasks.vision.RightTargetAutonTask;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
@@ -75,6 +73,7 @@ public class Robot extends IterativeRobot {
         
         taskChooser.addDefault("CenterTargetBasicAutonTask", CenterTargetBasicAutonTask::new);
         taskChooser.addObject("RightTargetAutonTask", RightTargetAutonTask::new);
+        taskChooser.addObject("LeftTargetAutonTask", LeftTargetAutonTask::new);
         SmartDashboard.putData("Autonomous", taskChooser);
     }
     
@@ -83,6 +82,7 @@ public class Robot extends IterativeRobot {
         teleopRunner = new TaskRunner(
 //                new TestGearDropTask(),
                 new ArcadeDriveTask(),
+                new BackUpATadTask(),
                 new LifterTask(),
                 new TestLEDTask(),
                 new ShifterTask(),

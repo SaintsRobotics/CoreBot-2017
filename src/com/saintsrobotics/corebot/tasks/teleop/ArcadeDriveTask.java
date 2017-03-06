@@ -28,7 +28,9 @@ public class ArcadeDriveTask extends RunEachFrameTask {
         double forward = -Robot.oi.drive.leftStickY() * forwardMultiplier;
         double turn = Robot.oi.drive.rightStickX() * turnMultiplier;
         
-        Robot.motors.leftDrive.set(forward + turn);
-        Robot.motors.rightDrive.set(forward - turn);
+        if (!Robot.flags.disableDrive) {
+            Robot.motors.leftDrive.set(forward + turn);
+            Robot.motors.rightDrive.set(forward - turn);
+        }
     }
 }
