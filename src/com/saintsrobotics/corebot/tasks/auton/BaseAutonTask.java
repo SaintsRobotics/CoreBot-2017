@@ -1,4 +1,4 @@
-package com.saintsrobotics.corebot.tasks.vision;
+package com.saintsrobotics.corebot.tasks.auton;
 
 import com.saintsrobotics.corebot.Robot;
 import com.saintsrobotics.corebot.coroutine.Task;

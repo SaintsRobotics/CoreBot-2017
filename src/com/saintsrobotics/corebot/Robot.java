@@ -12,11 +12,12 @@ import com.saintsrobotics.corebot.output.Motors;
 import com.saintsrobotics.corebot.output.Servos;
 import com.saintsrobotics.corebot.tasks.PostSensorsToSmartDashboardTask;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
+import com.saintsrobotics.corebot.tasks.auton.CenterTargetDeadReckoningAutonTask;
+import com.saintsrobotics.corebot.tasks.auton.CenterTargetVisionAutonTask;
+import com.saintsrobotics.corebot.tasks.auton.LeftTargetVisionAutonTask;
+import com.saintsrobotics.corebot.tasks.auton.RightTargetVisionAutonTask;
 import com.saintsrobotics.corebot.tasks.teleop.*;
 import com.saintsrobotics.corebot.tasks.test.TestLEDTask;
-import com.saintsrobotics.corebot.tasks.vision.CenterTargetBasicAutonTask;
-import com.saintsrobotics.corebot.tasks.vision.LeftTargetAutonTask;
-import com.saintsrobotics.corebot.tasks.vision.RightTargetAutonTask;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -71,9 +72,10 @@ public class Robot extends IterativeRobot {
         }).start();
         visionTable = NetworkTable.getTable("/GRIP/myContoursReport");
         
-        taskChooser.addDefault("CenterTargetBasicAutonTask", CenterTargetBasicAutonTask::new);
-        taskChooser.addObject("RightTargetAutonTask", RightTargetAutonTask::new);
-        taskChooser.addObject("LeftTargetAutonTask", LeftTargetAutonTask::new);
+        taskChooser.addDefault("CenterTargetDeadReckoningAutonTask", CenterTargetDeadReckoningAutonTask::new);
+        taskChooser.addObject("LeftTargetVisionAutonTask", LeftTargetVisionAutonTask::new);
+        taskChooser.addObject("RightTargetVisionAutonTask", RightTargetVisionAutonTask::new);
+        taskChooser.addObject("CenterTargetVisionAutonTask", CenterTargetVisionAutonTask::new);
         SmartDashboard.putData("Autonomous", taskChooser);
     }
     

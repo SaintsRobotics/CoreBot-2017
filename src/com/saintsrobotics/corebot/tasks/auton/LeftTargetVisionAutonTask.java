@@ -1,6 +1,6 @@
-package com.saintsrobotics.corebot.tasks.vision;
+package com.saintsrobotics.corebot.tasks.auton;
 
-public class LeftTargetAutonTask extends BaseAutonTask {
+public class LeftTargetVisionAutonTask extends BaseAutonTask {
     
     @Override
     protected void runVisionTask() {
