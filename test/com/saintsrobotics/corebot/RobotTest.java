@@ -1,6 +1,5 @@
 package com.saintsrobotics.corebot;
 
-import com.saintsrobotics.corebot.input.OI;
 import com.saintsrobotics.corebot.input.sensors.LimitSwitches;
 import com.saintsrobotics.corebot.output.Motors;
 

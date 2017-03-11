@@ -3,8 +3,6 @@ package com.saintsrobotics.corebot;
 import com.saintsrobotics.corebot.coroutine.Task;
 import com.saintsrobotics.corebot.coroutine.TaskRunner;
 import com.saintsrobotics.corebot.input.CompetitionSensors;
-import com.saintsrobotics.corebot.input.Flags;
-import com.saintsrobotics.corebot.input.OI;
 import com.saintsrobotics.corebot.input.Sensors;
 import com.saintsrobotics.corebot.output.CompetitionMotors;
 import com.saintsrobotics.corebot.output.CompetitionServos;

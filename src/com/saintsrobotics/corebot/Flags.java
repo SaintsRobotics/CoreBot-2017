@@ -1,4 +1,4 @@
-package com.saintsrobotics.corebot.input;
+package com.saintsrobotics.corebot;
 
 public class Flags {
 	
