@@ -2,12 +2,9 @@ package com.saintsrobotics.corebot;
 
 import com.saintsrobotics.corebot.coroutine.Task;
 import com.saintsrobotics.corebot.coroutine.TaskRunner;
-import com.saintsrobotics.corebot.input.CompetitionSensors;
+import com.saintsrobotics.corebot.input.PracticeSensors;
 import com.saintsrobotics.corebot.input.Sensors;
-import com.saintsrobotics.corebot.output.CompetitionMotors;
-import com.saintsrobotics.corebot.output.CompetitionServos;
-import com.saintsrobotics.corebot.output.Motors;
-import com.saintsrobotics.corebot.output.Servos;
+import com.saintsrobotics.corebot.output.*;
 import com.saintsrobotics.corebot.tasks.PostSensorsToSmartDashboardTask;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
 import com.saintsrobotics.corebot.tasks.auton.CenterTargetDeadReckoningAutonTask;
@@ -36,9 +33,9 @@ public class Robot extends IterativeRobot {
     public static Preferences prefs;
 
     public static Flags flags = new Flags();
-    public static Sensors sensors = new CompetitionSensors();
-    public static Motors motors = new CompetitionMotors();
-    public static Servos servos = new CompetitionServos();
+    public static Sensors sensors = new PracticeSensors();
+    public static Motors motors = new PracticeWithCompetitionGearDropMotors();
+    public static Servos servos = new NoopServos();
     public static OI oi = new OI();
 
     private UsbCamera camera;
@@ -56,17 +53,22 @@ public class Robot extends IterativeRobot {
     @Override
     public void robotInit() {
         prefs = Preferences.getInstance();
+//        prefs.getKeys().forEach(key -> {
+//            prefs.remove((String) key);
+//        });
         oi.init();
         sensors.init();
         motors.init();
         servos.init();
         
-        cameraWidth = (int)prefs.getDouble("camera_width", 320);
-        cameraHeight = (int)prefs.getDouble("camera_height", 240);
+        cameraWidth = prefs.getInt("camera_width", 320);
+        cameraHeight = prefs.getInt("camera_height", 240);
+        int cameraFps = prefs.getInt("camera_fps", 8);
         new Thread(() -> {
             camera = CameraServer.getInstance().startAutomaticCapture();
             camera.setResolution(cameraWidth, cameraHeight);
             camera.setBrightness(prefs.getInt("camera_brightness", 0));
+            camera.setFPS(cameraFps);
         }).start();
         visionTable = NetworkTable.getTable("/GRIP/myContoursReport");
         

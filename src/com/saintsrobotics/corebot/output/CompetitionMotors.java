@@ -20,7 +20,7 @@ public class CompetitionMotors extends Motors {
                 false,
                 true,
                 false,
-                false);
+                true);
     }
 }
 

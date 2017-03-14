@@ -18,10 +18,11 @@ public class GearDropTask extends RunContinuousTask {
         double gearDropOut = Robot.motors.getGearDropOut();
         
         while (!(Robot.oi.drive.RB() || Robot.flags.wantKick)) {
-            double value = -armPid.compute(Robot.sensors.potentiometer.get(), gearDropIn) - armPid.errorSum;
+            armPid.errorSum = 0;
+            double value = armPid.compute(Robot.sensors.potentiometer.get(), gearDropIn);
             SmartDashboard.putNumber("geardrop_in_motor", value);
-            if (value > 0) value = 0;
-            if (value < -0.6) value = -0.6;
+            if (value < 0) value = 0;
+            if (value > 0.6) value = 0.6;
             Robot.motors.gearDrop.set(value);
             wait.forFrame();
         }
@@ -29,16 +30,23 @@ public class GearDropTask extends RunContinuousTask {
         if (gearDropOut != -1 && gearDropIn != -1) {
             
             while (Robot.oi.drive.RB() || Robot.flags.wantKick) {
-                double value = -armPid.compute(Robot.sensors.potentiometer.get(), gearDropOut);
+                double value = armPid.compute(Robot.sensors.potentiometer.get(), gearDropOut);
                 SmartDashboard.putNumber("geardrop_out_motor", value);
                 Robot.motors.gearDrop.set(Math.signum(value) * Math.min(Math.abs(value), 1.0));
                 wait.forFrame();
             }
             
-            long startTime = System.currentTimeMillis();
+            long outButtonEndTime = System.currentTimeMillis();
+            while (System.currentTimeMillis() < outButtonEndTime + 2000) {
+                double value = armPid.compute(Robot.sensors.potentiometer.get(), gearDropOut);
+                SmartDashboard.putNumber("geardrop_out_motor", value);
+                Robot.motors.gearDrop.set(Math.signum(value) * Math.min(Math.abs(value), 1.0));
+                wait.forFrame();
+            }
             
-            while (System.currentTimeMillis() < startTime + 1000) {
-                double value = -armPid.compute(Robot.sensors.potentiometer.get(), gearDropIn);
+            long outEndTime = System.currentTimeMillis();
+            while (System.currentTimeMillis() < outEndTime + 1000) {
+                double value = armPid.compute(Robot.sensors.potentiometer.get(), gearDropIn);
                 SmartDashboard.putNumber("geardrop_in_motor", value);
                 Robot.motors.gearDrop.set(Math.signum(value) * Math.min(Math.abs(value), 1.0));
                 wait.forFrame();
