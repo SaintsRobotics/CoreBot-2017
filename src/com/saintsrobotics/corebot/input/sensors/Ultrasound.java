@@ -34,8 +34,8 @@ public class Ultrasound {
     }
     
     public void update() {
-//        double val = (2.2-analog.getAverageVoltage()) * 40 / 2.2 - 3;// * 53.72 - 5.62;
-        double val = analog.getAverageVoltage() * 53.72 - 5.62;
+        double val = (2.2-analog.getAverageVoltage()) * 40 / 2.2 - 3;// * 53.72 - 5.62;
+//        double val = analog.getAverageVoltage() * 53.72 - 5.62;
 //        if (val > 220) val = lowPassQueue[0];
         lowPassQueue[0] = val;
         for (int i = 0; i < lowPassQueue.length-1; i++) {

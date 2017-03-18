@@ -16,7 +16,7 @@ public class PracticeWithCompetitionGearDropMotors extends Motors {
         boolean lifterInverted,
         boolean gearDropInverted
         */
-        super(4, 5, 2, 3, 0, 1, 7, 6,
+        super(2, 3, 4, 5, 0, 1, 7, 6,
                 false,
                 true,
                 false,

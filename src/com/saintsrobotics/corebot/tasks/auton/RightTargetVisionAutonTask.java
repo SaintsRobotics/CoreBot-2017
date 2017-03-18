@@ -8,12 +8,12 @@ public class RightTargetVisionAutonTask extends BaseAutonTask {
         turnLeft(deadReckoningTurnSpeed, deadReckoningTurnTime);
         stop(0.4);
         
-        driveIntoLiftAndKickAndBackOff(lineUpSpeedSides, false);
+        driveIntoLiftAndKickAndBackOff(lineUpSpeedSides, true);
         
-//        rotateRight(deadReckoningRightTurnSpeed, deadReckoningRightTurnTime);
-//
-//        driveForward(deadReckoningRightSideMoveSpeed, 0);
-//        waitUntilObstacleSpottedOrTimeout(deadReckoningRightSideMoveTime);
+        rotateRight(deadReckoningRightTurnSpeed, deadReckoningRightTurnTime);
+
+        driveForward(deadReckoningRightSideMoveSpeed, 0);
+        waitUntilObstacleSpottedOrTimeout(deadReckoningRightSideMoveTime);
         
         stop(0);
     }

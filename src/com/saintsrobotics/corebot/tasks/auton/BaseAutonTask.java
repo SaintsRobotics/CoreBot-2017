@@ -17,6 +17,9 @@ public abstract class BaseAutonTask extends Task {
     protected final double visionCoastTime = Robot.prefs.getDouble("vision_coast_time", 0);
     protected final double visionKickTime = Robot.prefs.getDouble("vision_idle_time", 0);
     
+    protected final double visionBackUpSpeed = Robot.prefs.getDouble("vision_back_up_speed", 0);
+    protected final double visionBackUpTime = Robot.prefs.getDouble("vision_back_up_time", 0);
+    
     protected final double deadReckoningForwardSpeed = Robot.prefs.getDouble("dead_reckoning_forward_speed", 0);
     protected final double deadReckoningForwardTime = Robot.prefs.getDouble("dead_reckoning_forward_time", 0);
     protected final double deadReckoningTurnSpeed = Robot.prefs.getDouble("dead_reckoning_turn_speed", 0);
@@ -182,7 +185,7 @@ public abstract class BaseAutonTask extends Task {
     
     protected void backUp() {
         Robot.log("Backing up...");
-        driveForward(-visionCoastSpeed, visionCoastTime);
+        driveForward(-visionBackUpSpeed, visionBackUpTime);
         stop(0);
     }
     
