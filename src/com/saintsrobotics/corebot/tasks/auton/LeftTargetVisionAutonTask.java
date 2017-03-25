@@ -10,10 +10,10 @@ public class LeftTargetVisionAutonTask extends BaseAutonTask {
         
         driveIntoLiftAndKickAndBackOff(lineUpSpeedSides, true);
 
-        rotateLeft(deadReckoningRightTurnSpeed, deadReckoningRightTurnTime);
+//        rotateLeft(deadReckoningRightTurnSpeed, deadReckoningRightTurnTime);
         
-        driveForward(deadReckoningRightSideMoveSpeed, 0);
-        waitUntilObstacleSpottedOrTimeout(deadReckoningRightSideMoveTime);
+//        driveForward(deadReckoningRightSideMoveSpeed, 0);
+//        waitUntilObstacleSpottedOrTimeout(deadReckoningRightSideMoveTime);
         
         stop(0);
     }

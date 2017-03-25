@@ -2,13 +2,16 @@ package com.saintsrobotics.corebot;
 
 import com.saintsrobotics.corebot.coroutine.Task;
 import com.saintsrobotics.corebot.coroutine.TaskRunner;
-import com.saintsrobotics.corebot.input.PracticeSensors;
+import com.saintsrobotics.corebot.input.CompetitionSensors;
 import com.saintsrobotics.corebot.input.Sensors;
-import com.saintsrobotics.corebot.output.*;
+import com.saintsrobotics.corebot.output.CompetitionMotors;
+import com.saintsrobotics.corebot.output.Motors;
+import com.saintsrobotics.corebot.output.NoopServos;
+import com.saintsrobotics.corebot.output.Servos;
 import com.saintsrobotics.corebot.tasks.PostSensorsToSmartDashboardTask;
 import com.saintsrobotics.corebot.tasks.UpdateMotors;
 import com.saintsrobotics.corebot.tasks.auton.CenterTargetDeadReckoningAutonTask;
-import com.saintsrobotics.corebot.tasks.auton.CenterTargetVisionAutonTask;
+import com.saintsrobotics.corebot.tasks.auton.CrossBaselineTask;
 import com.saintsrobotics.corebot.tasks.auton.LeftTargetVisionAutonTask;
 import com.saintsrobotics.corebot.tasks.auton.RightTargetVisionAutonTask;
 import com.saintsrobotics.corebot.tasks.teleop.*;
@@ -33,8 +36,8 @@ public class Robot extends IterativeRobot {
     public static Preferences prefs;
 
     public static Flags flags = new Flags();
-    public static Sensors sensors = new PracticeSensors();
-    public static Motors motors = new PracticeWithCompetitionGearDropMotors();
+    public static Sensors sensors = new CompetitionSensors();
+    public static Motors motors = new CompetitionMotors();
     public static Servos servos = new NoopServos();
     public static OI oi = new OI();
 
@@ -73,10 +76,10 @@ public class Robot extends IterativeRobot {
         visionTable = NetworkTable.getTable("/GRIP/myContoursReport");
         
         taskChooser.addDefault("CenterTargetDeadReckoningAutonTask", CenterTargetDeadReckoningAutonTask::new);
+        taskChooser.addObject("CrossBaselineAutonTask", CrossBaselineTask::new);
         taskChooser.addObject("LeftTargetVisionAutonTask", LeftTargetVisionAutonTask::new);
         taskChooser.addObject("RightTargetVisionAutonTask", RightTargetVisionAutonTask::new);
-        taskChooser.addObject("CenterTargetVisionAutonTask", CenterTargetVisionAutonTask::new);
-        SmartDashboard.putData("Autonomous", taskChooser);
+        SmartDashboard.putData("Autonomous2", taskChooser);
     }
     
     @Override

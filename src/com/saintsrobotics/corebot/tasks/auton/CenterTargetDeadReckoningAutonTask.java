@@ -15,7 +15,7 @@ public class CenterTargetDeadReckoningAutonTask extends BaseAutonTask {
             }
             return false;
         });
-        driveForward(0.6, 0.5);
+        driveForward(0.6, 0.8);
         kickGear(0.5);
         stop(0.5);
         
