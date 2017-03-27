@@ -7,7 +7,7 @@ public class PID {
     
     private final double maxSum;
 
-    private double kp;
+    public double kp;
     private double ki;
     private double kd;
     

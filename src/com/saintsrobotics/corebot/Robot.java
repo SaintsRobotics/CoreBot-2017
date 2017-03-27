@@ -48,6 +48,7 @@ public class Robot extends IterativeRobot {
     private TaskRunner teleopRunner;
     private TaskRunner autonomousRunner;
     private TaskRunner testRunner;
+    private TaskRunner disabledRunner;
     
     public static void log(String message) {
         DriverStation.reportWarning(message, false);
@@ -84,6 +85,7 @@ public class Robot extends IterativeRobot {
     
     @Override
     public void teleopInit() {
+        if (disabledRunner != null) disabledRunner.disable();
         teleopRunner = new TaskRunner(
 //                new TestGearDropTask(),
                 new ArcadeDriveTask(),
@@ -99,6 +101,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
+        if (disabledRunner != null) disabledRunner.disable();
         autonomousRunner = new TaskRunner(
         		taskChooser.getSelected().get(),
                 new GearDropTask(),
@@ -109,6 +112,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void testInit() {
+        if (disabledRunner != null) disabledRunner.disable();
         testRunner = new TaskRunner(
 //                new TestShifterTask(),
 //                new UpdateMotors()
@@ -143,10 +147,14 @@ public class Robot extends IterativeRobot {
             testRunner.disable();
         }
         motors.stopAll();
+    
+        disabledRunner = new TaskRunner(
+                new PostSensorsToSmartDashboardTask()
+        );
     }
 
     @Override
     public void disabledPeriodic() {
-
+        disabledRunner.run();
     }
 }
