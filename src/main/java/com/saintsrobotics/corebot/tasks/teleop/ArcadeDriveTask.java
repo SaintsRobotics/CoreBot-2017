@@ -13,9 +13,7 @@ public class ArcadeDriveTask extends RunEachFrameTask {
     protected void runEachFrame() {
         if (Robot.oi.drive.A()) {
             turnMultiplier = Math.max(0, turnMultiplier - 0.015625);
-        } else if (Robot.oi.drive.B()) {
-            turnMultiplier = Math.min(1, turnMultiplier + 0.015625);
-        }
+        } 
         SmartDashboard.putNumber("Turn Multiplier", turnMultiplier);
 
         if (Robot.oi.drive.X()) {
@@ -25,9 +23,15 @@ public class ArcadeDriveTask extends RunEachFrameTask {
         }
         SmartDashboard.putNumber("Forward Multiplier", forwardMultiplier);
 
+        
         double forward = -Robot.oi.drive.leftStickY() * forwardMultiplier;
         double turn = Robot.oi.drive.rightStickX() * turnMultiplier;
         
+        if (Robot.oi.drive.B()) {
+            forward = (-Robot.oi.babyDrive.leftStickY() * forwardMultiplier) * 0.6;
+            turn = (Robot.oi.babyDrive.rightStickX() * turnMultiplier) * 0.6;
+        }
+
         SmartDashboard.putNumber("Input Forward", forward);
         SmartDashboard.putNumber("Input Turn", turn);
         

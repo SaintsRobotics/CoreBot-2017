@@ -21,7 +21,7 @@ public class GearDropTask extends RunContinuousTask {
         double gearDropOut = Robot.motors.getGearDropOut();
         
         armPid.kp = holdKp;
-        while (!(Robot.oi.drive.RB() || Robot.flags.wantKick)) {
+        while (!(Robot.oi.drive.RB() || Robot.flags.wantKick || (Robot.oi.babyDrive.RB() && Robot.oi.drive.B()))) {
             armPid.errorSum = 0;
             double value = armPid.compute(Robot.sensors.potentiometer.get(), gearDropIn);
             SmartDashboard.putNumber("geardrop_in_motor", value);
@@ -34,7 +34,7 @@ public class GearDropTask extends RunContinuousTask {
         
         if (gearDropOut != -1 && gearDropIn != -1) {
             
-            while (Robot.oi.drive.RB() || Robot.flags.wantKick) {
+            while (Robot.oi.drive.RB() || Robot.flags.wantKick || (Robot.oi.babyDrive.RB() && Robot.oi.drive.B())) {
                 double value = armPid.compute(Robot.sensors.potentiometer.get(), gearDropOut);
                 SmartDashboard.putNumber("geardrop_out_motor", value);
                 Robot.motors.gearDrop.set(Math.signum(value) * Math.min(Math.abs(value), 1.0));

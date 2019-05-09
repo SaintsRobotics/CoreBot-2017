@@ -10,10 +10,13 @@ public class OI {
     private List<Input> inputs = new ArrayList<>();
     
     public final XboxInput drive;
+    public final XboxInput babyDrive;
     
     public OI() {
         drive = new XboxInput(0);
         inputs.add(drive);
+        babyDrive = new XboxInput(0);
+        inputs.add(babyDrive);
     }
     
     public void init() {
